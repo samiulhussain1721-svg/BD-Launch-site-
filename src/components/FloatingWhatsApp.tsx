@@ -16,8 +16,8 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      // Reveal once scrolled past hero (approx 350px)
-      if (window.scrollY > 350) {
+      const scrollPos = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+      if (scrollPos > 350) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -25,9 +25,13 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
     handleScroll();
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(defaultMessage)}`;

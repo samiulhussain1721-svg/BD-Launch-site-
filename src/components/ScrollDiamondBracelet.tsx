@@ -11,8 +11,11 @@ export interface BraceletConfig {
   videoDuration: number; // 8.0 seconds strict scroll timeline
 }
 
+const BASE_URL = import.meta.env.BASE_URL || '/';
+const cleanBase = BASE_URL.endsWith('/') ? BASE_URL : `${BASE_URL}/`;
+
 export const DEFAULT_BRACELET_CONFIG: BraceletConfig = {
-  videoSrc: '/videos/Ultra_detailed_cinematic_still.mp4',
+  videoSrc: `${cleanBase}videos/Ultra_detailed_cinematic_still.mp4`,
   videoDuration: 8.0,
 };
 
@@ -72,6 +75,37 @@ export const ScrollDiamondBracelet: React.FC<ScrollDiamondBraceletProps> = ({
   const targetTimeRef = useRef(0);
   const animFrameIdRef = useRef<number | null>(null);
 
+  // Check video ready state on mount and attach listeners
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const markReady = () => {
+      setIsVideoReady(true);
+      if (video.currentTime === 0) {
+        try {
+          video.currentTime = 0.001;
+        } catch {
+          // ignore seek restriction
+        }
+      }
+    };
+
+    if (video.readyState >= 1) {
+      markReady();
+    }
+
+    video.addEventListener('loadedmetadata', markReady);
+    video.addEventListener('loadeddata', markReady);
+    video.addEventListener('canplay', markReady);
+
+    return () => {
+      video.removeEventListener('loadedmetadata', markReady);
+      video.removeEventListener('loadeddata', markReady);
+      video.removeEventListener('canplay', markReady);
+    };
+  }, []);
+
   // Synchronize target video timestamp strictly with user scroll position
   useEffect(() => {
     let ticking = false;
@@ -79,8 +113,10 @@ export const ScrollDiamondBracelet: React.FC<ScrollDiamondBraceletProps> = ({
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-          const current = Math.max(0, Math.min(1, totalHeight > 0 ? window.scrollY / totalHeight : 0));
+          const scrollElement = document.scrollingElement || document.documentElement || document.body;
+          const totalHeight = Math.max(1, scrollElement.scrollHeight - window.innerHeight);
+          const scrollY = window.scrollY || window.pageYOffset || scrollElement.scrollTop || 0;
+          const current = Math.max(0, Math.min(1, scrollY / totalHeight));
 
           // Clamp target time strictly between 0.0s and 8.0s
           targetTimeRef.current = Math.max(0, Math.min(DEFAULT_BRACELET_CONFIG.videoDuration, current * DEFAULT_BRACELET_CONFIG.videoDuration));
@@ -105,9 +141,13 @@ export const ScrollDiamondBracelet: React.FC<ScrollDiamondBraceletProps> = ({
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
     handleScroll();
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, [onMilestoneChange]);
 
   // High-performance RAF scroll-scrub loop: seeks smoothly without decoder stutter
@@ -174,10 +214,19 @@ export const ScrollDiamondBracelet: React.FC<ScrollDiamondBraceletProps> = ({
           disablePictureInPicture
           onLoadedMetadata={(e) => {
             setIsVideoReady(true);
-            e.currentTarget.currentTime = 0.001;
+            try {
+              e.currentTarget.currentTime = 0.001;
+            } catch {
+              // ignore initial seek restriction
+            }
           }}
+          onLoadedData={() => setIsVideoReady(true)}
+          onCanPlay={() => setIsVideoReady(true)}
           className="w-full h-full object-cover object-center filter brightness-95 contrast-110 saturate-105"
-        />
+        >
+          <source src={DEFAULT_BRACELET_CONFIG.videoSrc} type="video/mp4" />
+          <source src={`${cleanBase}videos/bracelet_scroll_all_intra.mp4`} type="video/mp4" />
+        </video>
         {/* Soft luxury atelier overlay blend for maximum typography contrast */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#080C0E]/75 via-[#080C0E]/45 to-[#080C0E]/80 mix-blend-multiply pointer-events-none" />
       </div>

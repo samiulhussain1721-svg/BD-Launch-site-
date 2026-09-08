@@ -20,9 +20,11 @@ export const Header: React.FC<HeaderProps> = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const scrollPos = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+      setScrolled(scrollPos > 20);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -30,8 +32,38 @@ export const Header: React.FC<HeaderProps> = ({
     if (onNavigateHome) {
       e.preventDefault();
       onNavigateHome();
+      window.location.hash = '';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  };
+
+  const handleSectionClick = (sectionId: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onNavigateHome) {
+      onNavigateHome();
+    }
+    window.location.hash = sectionId;
+    setTimeout(() => {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 60);
+  };
+
+  const handleMobileSectionClick = (sectionId: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    if (onNavigateHome) {
+      onNavigateHome();
+    }
+    window.location.hash = sectionId;
+    setTimeout(() => {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 60);
   };
 
   const handleGazetteClick = (e: React.MouseEvent) => {
@@ -79,7 +111,7 @@ export const Header: React.FC<HeaderProps> = ({
         <nav className="hidden lg:flex items-center gap-1.5 xl:gap-4 text-[9px] xl:text-[10.5px] font-mono uppercase tracking-[0.12em] xl:tracking-[0.16em] text-[#E2E8F0]/70 mx-auto">
           <a
             href="#about"
-            onClick={handleHomeClick}
+            onClick={handleSectionClick('about')}
             className="hover:text-[#ECE5DA] transition-colors py-1 px-1.5 xl:px-2 rounded-xs hover:bg-white/[0.03]"
           >
             Philosophy
@@ -87,7 +119,7 @@ export const Header: React.FC<HeaderProps> = ({
           <span className="text-white/15">&bull;</span>
           <a
             href="#rings"
-            onClick={handleHomeClick}
+            onClick={handleSectionClick('rings')}
             className="hover:text-[#ECE5DA] transition-colors py-1 px-1.5 xl:px-2 rounded-xs hover:bg-white/[0.03]"
           >
             Fine Jewellery
@@ -95,7 +127,7 @@ export const Header: React.FC<HeaderProps> = ({
           <span className="text-white/15">&bull;</span>
           <a
             href="#certs"
-            onClick={handleHomeClick}
+            onClick={handleSectionClick('certs')}
             className="hover:text-[#ECE5DA] transition-colors py-1 px-1.5 xl:px-2 rounded-xs hover:bg-white/[0.03]"
           >
             IGI Certified
@@ -114,7 +146,7 @@ export const Header: React.FC<HeaderProps> = ({
           <span className="text-white/15">&bull;</span>
           <a
             href="#sizing"
-            onClick={handleHomeClick}
+            onClick={handleSectionClick('sizing')}
             className="hover:text-[#ECE5DA] transition-colors py-1 px-1.5 xl:px-2 rounded-xs hover:bg-white/[0.03] flex items-center gap-1"
           >
             <Ruler className="w-2.5 h-2.5 xl:w-3 xl:h-3 text-[#ECE5DA]/70" />
@@ -123,7 +155,7 @@ export const Header: React.FC<HeaderProps> = ({
           <span className="text-white/15">&bull;</span>
           <a
             href="#hub"
-            onClick={handleHomeClick}
+            onClick={handleSectionClick('hub')}
             className="hover:text-[#ECE5DA] transition-colors py-1 px-1.5 xl:px-2 rounded-xs hover:bg-white/[0.03]"
           >
             Consultation
@@ -167,30 +199,21 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <a
               href="#about"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                if (onNavigateHome) onNavigateHome();
-              }}
+              onClick={handleMobileSectionClick('about')}
               className="block py-2 text-[#E2E8F0] hover:text-[#ECE5DA] border-b border-white/10"
             >
               Philosophy
             </a>
             <a
               href="#rings"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                if (onNavigateHome) onNavigateHome();
-              }}
+              onClick={handleMobileSectionClick('rings')}
               className="block py-2 text-[#E2E8F0] hover:text-[#ECE5DA] border-b border-white/10"
             >
               Diamond Cuts &amp; Rings
             </a>
             <a
               href="#certs"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                if (onNavigateHome) onNavigateHome();
-              }}
+              onClick={handleMobileSectionClick('certs')}
               className="block py-2 text-[#E2E8F0] hover:text-[#ECE5DA] border-b border-white/10"
             >
               IGI Certified
@@ -210,10 +233,7 @@ export const Header: React.FC<HeaderProps> = ({
             </a>
             <a
               href="#sizing"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                if (onNavigateHome) onNavigateHome();
-              }}
+              onClick={handleMobileSectionClick('sizing')}
               className="block py-2 text-[#E2E8F0] hover:text-[#ECE5DA] border-b border-white/10 flex items-center gap-2"
             >
               <Ruler className="w-3.5 h-3.5 text-[#ECE5DA]" />
@@ -221,10 +241,7 @@ export const Header: React.FC<HeaderProps> = ({
             </a>
             <a
               href="#hub"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                if (onNavigateHome) onNavigateHome();
-              }}
+              onClick={handleMobileSectionClick('hub')}
               className="block py-2 text-[#E2E8F0] hover:text-[#ECE5DA] border-b border-white/10"
             >
               Consultation Hub

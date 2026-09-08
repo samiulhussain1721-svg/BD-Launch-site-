@@ -37,7 +37,7 @@ export default function App() {
       const hash = window.location.hash;
       const path = window.location.pathname;
 
-      if (path === '/vault-admin' || hash === '#vault-admin' || hash === '#gazette-admin') {
+      if (path.endsWith('/vault-admin') || path.endsWith('/vault-admin/') || hash === '#vault-admin' || hash === '#gazette-admin') {
         setIsAdminOpen(true);
       } else if (hash.startsWith('#gazette/') || hash.startsWith('#article/')) {
         const slug = hash.replace(/^#(gazette|article)\//, '');
@@ -54,6 +54,15 @@ export default function App() {
         setSelectedArticle(null);
         setTimeout(() => {
           document.getElementById('sizing')?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      } else if (hash && hash.startsWith('#') && hash.length > 1) {
+        setSelectedArticle(null);
+        const sectionId = hash.slice(1);
+        setTimeout(() => {
+          const el = document.getElementById(sectionId);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+          }
         }, 100);
       }
     };

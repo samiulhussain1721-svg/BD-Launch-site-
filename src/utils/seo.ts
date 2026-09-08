@@ -71,7 +71,7 @@ const updateSchemaLD = (article?: GazetteArticle) => {
           'name': 'Brindley Diamonds',
           'logo': {
             '@type': 'ImageObject',
-            'url': `${window.location.origin}/firefly.png`
+            'url': `${window.location.origin}${import.meta.env.BASE_URL}firefly.png`
           }
         },
         'mainEntityOfPage': {

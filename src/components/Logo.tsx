@@ -32,7 +32,8 @@ export const Logo: React.FC<LogoProps> = ({
     ? 68
     : 92;
 
-  const imgSrc = imageUrl || fireflyLogo || '/firefly.png' || '/Firefly.png' || logoImg;
+  const baseUrl = import.meta.env.BASE_URL || '/';
+  const imgSrc = imageUrl || fireflyLogo || `${baseUrl}firefly.png` || logoImg;
 
   const textColor =
     variant === 'light'

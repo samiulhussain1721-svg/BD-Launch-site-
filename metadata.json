@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix Brindley Diamonds",
+  "description": "Bespoke IGI-certified diamonds and fine jewellery atelier with interactive vault, ring configurator, and consultation brief tools.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

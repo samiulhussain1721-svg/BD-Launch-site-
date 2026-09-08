@@ -1,0 +1,219 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg: #172227;
+    --dark: #10191D;
+    --teal-border: rgba(255, 255, 255, 0.08);
+    --accent: #E2E8F0;
+    --gold: #ECE5DA;
+    --gold-hover: #F2ECE0;
+    --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--accent);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Space Grotesk', 'Inter', sans-serif;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .font-serif-luxury {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+}
+
+::selection {
+  background: #ECE5DA;
+  color: #10191D;
+}
+
+/* Custom Luxury Buttons */
+.btn-solid {
+  padding: 14px 28px;
+  background-color: #ECE5DA;
+  color: #172227;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 4px;
+  transition: transform 0.4s var(--ease-luxury), background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.4s ease;
+  cursor: pointer;
+  border: 1px solid #ECE5DA;
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-solid:hover {
+  background-color: #FFFFFF;
+  border-color: #FFFFFF;
+  color: #10191D;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(236, 229, 218, 0.3), 0 0 20px rgba(236, 229, 218, 0.2);
+}
+
+.btn-solid:active {
+  transform: translateY(0);
+}
+
+.btn-ghost {
+  padding: 14px 28px;
+  background-color: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(226, 232, 240, 0.2);
+  color: #E2E8F0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 4px;
+  transition: transform 0.4s var(--ease-luxury), color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.4s ease;
+  cursor: pointer;
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ghost:hover {
+  border-color: #ECE5DA;
+  color: #ECE5DA;
+  background-color: rgba(236, 229, 218, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35), 0 0 18px rgba(236, 229, 218, 0.12);
+}
+
+.btn-ghost:active {
+  transform: translateY(0);
+}
+
+/* Micro-Glow Shimmer Button */
+.btn-glow {
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-glow::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(90deg, rgba(236, 229, 218, 0), rgba(236, 229, 218, 0.4), rgba(236, 229, 218, 0));
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.6s ease;
+  transform: translateX(-100%);
+}
+
+.btn-glow:hover::before {
+  opacity: 1;
+  transform: translateX(100%);
+}
+
+.btn-glow:hover {
+  box-shadow: 0 0 25px rgba(236, 229, 218, 0.22), 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Glassmorphic Cards */
+.card-glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.5s ease, background-color 0.4s ease;
+  will-change: transform, border-color, box-shadow;
+}
+
+.card-glass:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(236, 229, 218, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 30px rgba(236, 229, 218, 0.08);
+}
+
+.card-slate {
+  background: rgba(16, 25, 29, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.4s ease, background-color 0.35s ease;
+  will-change: transform, border-color;
+}
+
+.card-slate:hover {
+  border-color: rgba(236, 229, 218, 0.45);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.4), 0 0 24px rgba(236, 229, 218, 0.06);
+}
+
+/* Image zoom helper with luxury cubic-bezier */
+.img-luxury-zoom {
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+  will-change: transform;
+}
+
+.group:hover .img-luxury-zoom {
+  transform: scale(1.035);
+}
+
+@keyframes spin-sync {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-sync {
+  animation: spin-sync 1s linear infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(1.3); }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* Floating WhatsApp badge subtle pulse glow */
+@keyframes whatsapp-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4), 0 8px 32px rgba(0, 0, 0, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(37, 211, 102, 0), 0 12px 40px rgba(0, 0, 0, 0.5); }
+}
+
+.animate-whatsapp-glow {
+  animation: whatsapp-glow 3s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+/* Prefers-reduced-motion accessibility overrides */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

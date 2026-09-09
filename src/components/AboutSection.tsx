@@ -69,8 +69,11 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenConsultation }
           <span className="text-xs font-mono tracking-[0.25em] text-[#ECE5DA]/70 uppercase block mb-3">
             Our Studio Philosophy
           </span>
-          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display text-[#FFFFFF] font-light tracking-[0.12em] mb-6 leading-tight">
-            Diamonds are formed under pressure, buying them shouldn't be.
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display text-[#FFFFFF] font-light tracking-[0.06em] sm:tracking-[0.12em] mb-6 leading-tight">
+            Diamonds are formed under pressure,{' '}
+            <span className="block sm:inline mt-1 sm:mt-0">
+              buying them <span className="whitespace-nowrap">shouldn't be.</span>
+            </span>
           </h2>
           <div className="w-16 h-0.5 bg-[#ECE5DA]/40 mx-auto mb-8" />
           

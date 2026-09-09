@@ -95,11 +95,11 @@ export const Hero: React.FC<HeroProps> = ({ onOpenConsultation }) => {
           {/* Primary Headline */}
           <motion.h1
             variants={cinematicItemVariants}
-            className="text-3xl sm:text-5xl lg:text-6xl font-serif-luxury font-light text-[#FFFFFF] tracking-[0.06em] max-w-4xl mx-auto mb-6 leading-[1.18]"
+            className="text-3xl sm:text-5xl lg:text-6xl font-serif-luxury font-light text-[#FFFFFF] tracking-[0.04em] sm:tracking-[0.06em] max-w-4xl mx-auto mb-6 leading-[1.22]"
           >
             Diamonds are formed under pressure.{' '}
             <span className="italic text-[#ECE5DA] font-normal block sm:inline">
-              Buying them shouldn't be.
+              Buying them <span className="whitespace-nowrap">shouldn't be.</span>
             </span>
           </motion.h1>
 

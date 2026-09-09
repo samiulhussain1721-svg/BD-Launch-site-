@@ -194,7 +194,7 @@ export const RingSizingGuide: React.FC = () => {
                 <li className="flex items-start gap-2.5">
                   <Check className="w-3.5 h-3.5 text-[#ECE5DA] shrink-0 mt-0.5" />
                   <span>
-                    <strong className="text-white">The Soap Impression:</strong> Gently press an existing ring into a soft bar of soap or take a high-resolution photo next to a £1 or $1 coin for CAD scaling.
+                    <strong className="text-white">The Soap Impression:</strong> Gently press an existing ring into a soft bar of soap or take a high-resolution photo next to a £1 coin for CAD scaling.
                   </span>
                 </li>
                 <li className="flex items-start gap-2.5">
@@ -213,7 +213,7 @@ export const RingSizingGuide: React.FC = () => {
                   Complimentary Ring Sizer Kit
                 </span>
                 <p className="text-xs text-[#E2E8F0]/80 font-light leading-relaxed">
-                  We can dispatch a discrete physical multi-sizer gauge in unbranded packaging directly to your private address.
+                  We can dispatch a discreet physical multi-sizer gauge in unbranded packaging directly to your private address.
                 </p>
               </div>
 
@@ -224,7 +224,7 @@ export const RingSizingGuide: React.FC = () => {
                 className="btn-solid btn-glow py-2.5 px-4 text-[10px] tracking-widest uppercase flex items-center justify-center gap-2 cursor-pointer"
               >
                 <MessageCircle className="w-3.5 h-3.5 text-[#10191D]" />
-                <span>Request Discrete Sizer Kit</span>
+                <span>Request Discreet Sizer Kit</span>
               </a>
             </div>
           </motion.div>

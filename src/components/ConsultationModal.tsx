@@ -15,6 +15,7 @@ import {
   FileText
 } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import { INSERT_PHONE, ATELIER_INSTAGRAM_DM_WEB, openInstagramDM } from '../config/atelier';
 
 const PIECE_TYPES = [
   { id: 'Engagement Ring', label: 'Engagement Ring', icon: '💍' },
@@ -167,13 +168,17 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
     setUploadedFiles((prev) => [...prev, ...newFiles]);
   };
 
+  const [isSubmittingBrief, setIsSubmittingBrief] = useState(false);
+
   const handleRemoveFile = (id: string) => {
     setUploadedFiles((prev) => prev.filter((f) => f.id !== id));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !email) return;
+    if (!name || !email || isSubmittingBrief) return;
+
+    setIsSubmittingBrief(true);
 
     const briefNumber = Math.floor(1000 + Math.random() * 9000);
     const newBrief: EnquiryBrief = {
@@ -200,7 +205,10 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
       createdAt: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
     };
 
-    setSubmittedBrief(newBrief);
+    setTimeout(() => {
+      setSubmittedBrief(newBrief);
+      setIsSubmittingBrief(false);
+    }, 400);
   };
 
   const formatFileSize = (bytes: number) => {
@@ -230,7 +238,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
             animate={shouldReduceMotion ? { opacity: 1 } : { x: 0 }}
             exit={shouldReduceMotion ? { opacity: 0 } : { x: '100%' }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-lg bg-[#172227] text-[#E2E8F0] border-l border-white/10 h-full overflow-y-auto z-10 shadow-2xl flex flex-col justify-between"
+            className="relative w-full max-w-lg bg-[#172227] text-[#E2E8F0] border-l border-white/10 h-[100dvh] max-h-[100dvh] overflow-y-auto z-10 shadow-2xl flex flex-col justify-between"
           >
             <div>
               {/* Modal Header */}
@@ -563,10 +571,11 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
 
                     <button
                       type="submit"
-                      className="w-full btn-solid py-3.5 text-xs font-mono uppercase tracking-[0.22em] flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+                      disabled={isSubmittingBrief}
+                      className="w-full btn-solid min-h-[48px] py-3.5 text-xs font-mono uppercase tracking-[0.22em] flex items-center justify-center gap-2 cursor-pointer shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <Send className="w-4 h-4" />
-                      Submit Private Brief
+                      {isSubmittingBrief ? 'Preparing Dossier...' : 'Submit Private Brief'}
                     </button>
 
                     <div className="flex items-center justify-center gap-2 text-[10px] font-mono text-[#E2E8F0]/50 uppercase tracking-wider text-center">
@@ -621,10 +630,10 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                     {/* Quick Channels */}
                     <div className="space-y-2.5 text-left pt-2">
                       <a
-                        href={`https://wa.me/447721391972?text=${encodeURIComponent(generateBriefFormattedMessage(submittedBrief))}`}
+                        href={`https://wa.me/${INSERT_PHONE}?text=${encodeURIComponent(generateBriefFormattedMessage(submittedBrief))}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full bg-[#10191D] border border-white/10 hover:border-[#ECE5DA]/50 p-3 rounded-xs flex items-center justify-between transition-colors text-xs font-mono"
+                        className="w-full min-h-[48px] bg-[#10191D] border border-white/10 hover:border-[#ECE5DA]/50 p-3 rounded-xs flex items-center justify-between transition-colors text-xs font-mono"
                       >
                         <span className="flex items-center gap-2 font-medium text-[#E2E8F0]">
                           <MessageCircle className="w-4 h-4 text-[#25D366]" />
@@ -642,10 +651,26 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                       </div>
 
                       <a
-                        href="https://instagram.com/brindleydiamonds"
+                        href={ATELIER_INSTAGRAM_DM_WEB}
+                        onClick={openInstagramDM}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full bg-[#10191D] border border-white/10 hover:border-[#ECE5DA]/50 p-3 rounded-xs flex items-center justify-between transition-colors text-xs font-mono"
+                        className="w-full min-h-[48px] bg-[#10191D] border border-white/10 hover:border-[#ECE5DA]/50 p-3 rounded-xs flex items-center justify-between transition-colors text-xs font-mono"
+                      >
+                        <span className="flex items-center gap-2 font-medium text-[#E2E8F0]">
+                          <Instagram className="w-4 h-4 text-[#ECE5DA]" />
+                          DM us on Instagram
+                        </span>
+                        <span className="text-[10px] text-[#ECE5DA] uppercase tracking-wider flex items-center gap-1">
+                          DM us <ArrowRight className="w-3 h-3" />
+                        </span>
+                      </a>
+
+                      <a
+                        href={`mailto:concierge@brindleydiamonds.com?subject=${encodeURIComponent(`Bespoke Enquiry Brief #${submittedBrief.id} - ${submittedBrief.clientName}`)}&body=${encodeURIComponent(generateBriefFormattedMessage(submittedBrief))}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full min-h-[48px] bg-[#10191D] border border-white/10 hover:border-[#ECE5DA]/50 p-3 rounded-xs flex items-center justify-between transition-colors text-xs font-mono"
                       >
                         <span className="flex items-center gap-2 font-medium text-[#E2E8F0]">
                           <Instagram className="w-4 h-4 text-[#ECE5DA]" />

@@ -28,7 +28,7 @@ export const Certifications: React.FC = () => {
     {
       icon: <Gem className="w-7 h-7" />,
       title: 'Ethically Sourced',
-      desc: 'Every stone is meticulously tracked from state-of-the-art ethical cutters back to our custom workshop bench.',
+      desc: 'Every stone is meticulously tracked from state-of-the-art ethical cutters back to our bespoke workshop bench.',
     },
   ];
 

@@ -125,7 +125,7 @@ export const Logo: React.FC<LogoProps> = ({
             <line x1="316" y1="195" x2="256" y2="335" stroke="url(#logoShine)" strokeWidth="3.5" />
           </g>
 
-          {/* Stylized BD Monogram Crest */}
+          {/* Stylised BD Monogram Crest */}
           <g transform="translate(0, 50)" stroke="url(#logoGold)" fill="none" strokeLinecap="round" strokeLinejoin="round">
             <path
               d="M 196,310 L 196,390 M 196,310 L 230,310 C 248,310 258,322 258,334 C 258,346 248,350 232,350 L 196,350 M 232,350 C 252,350 264,360 264,374 C 264,388 250,390 230,390 L 196,390"

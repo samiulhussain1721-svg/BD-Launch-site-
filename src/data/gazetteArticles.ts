@@ -14,7 +14,7 @@ export const INITIAL_GAZETTE_ARTICLES: GazetteArticle[] = [
     metaDescription: 'Discover why E colour grade paired with VS1/VS2 clarity represents the pinnacle of beauty, optical brilliance, and value in modern lab-grown diamonds.',
     seoKeywords: ['E colour diamond', 'VS clarity lab grown', '4Cs diamond guide', 'IGI certified lab diamond', 'Birmingham diamond consultation'],
     excerpt: 'While tradition urges buyers toward costly D Flawless grades, our gemmologists explain why calibrated E-colour and eye-clean VS clarity deliver indistinguishable optical perfection without the unnecessary premium.',
-    content: `When purchasing a diamond, the traditional four Cs—Colour, Clarity, Cut, and Carat—can quickly overwhelm even the most discerning client. In high-street showrooms, consumers are often led to believe that perfection exists solely at the extreme top tier: **D Colour** (completely colourless) and **VVS1 or Flawless Clarity**.
+    content: `When purchasing a diamond, the traditional four Cs (Colour, Clarity, Cut, and Carat) can quickly overwhelm even the most discerning client. In high-street showrooms, consumers are often led to believe that perfection exists solely at the extreme top tier: **D Colour** (completely colourless) and **VVS1 or Flawless Clarity**.
 
 However, within our Birmingham Jewellery Quarter atelier, we advocate for intelligent luxury. For lab-grown diamonds, **E colour paired with VS1 or VS2 clarity represents the absolute apex of beauty, optical brilliance, and true value**.
 
@@ -62,7 +62,7 @@ If you redirect capital away from invisible clarity grades (like VVS) and vanity
 
 * **Colour:** Aim for **E** (or high **F**) for crisp, icy-white brilliance.
 * **Clarity:** Request **VS1 or VS2**, verified by raw HD video and high-resolution cert scans.
-* **Cut:** Never compromise—insist on **Ideal Cut, Excellent Polish, and Excellent Symmetry**.
+* **Cut:** Never compromise. Insist on **Ideal Cut, Excellent Polish, and Excellent Symmetry**.
 * **Metal Pairing:** Platinum and 18k Yellow Gold showcase E-colour stones with breathtaking contrast.`
   },
   {
@@ -82,7 +82,7 @@ If you redirect capital away from invisible clarity grades (like VVS) and vanity
 
 For more than two and a half centuries, this concentrated community of diamond setters, master mounters, engravers, and assayers has shaped the gold standard of British fine jewellery.
 
-At Brindley Diamonds, this heritage is not merely a backdrop—it is our workshop’s heartbeat.
+At Brindley Diamonds, this heritage is not merely a backdrop; it is our workshop’s heartbeat.
 
 ---
 
@@ -104,7 +104,7 @@ Once the 3D wax model is printed in-house, it is cast using **18k Yellow Gold, 1
 
 We ensure all precious metals are responsibly sourced and refined, maintaining optimal tensile strength for decades of daily wear.
 
-> "The true hallmark of luxury isn't a famous brand logo stamped on the box—it is the density of the metal, the balance on the finger, and the microscopic precision of the prong seats."
+> "The true hallmark of luxury isn't a famous brand logo stamped on the box; it is the density of the metal, the balance on the finger, and the microscopic precision of the prong seats."
 
 ---
 
@@ -161,7 +161,7 @@ Here is our comprehensive guide to calculating an accurate ring size from home.
 To give you a quick sense of standard proportions:
 * **UK Size L to N:** The most common average ring size range for women in the UK.
 * **UK Size R to U:** The standard average size range for men’s wedding bands.
-* **Half Sizes:** Each full letter represents approximately **1.25mm of internal circumference**. A half-size difference is roughly 0.6mm—small, but vital for comfort.
+* **Half Sizes:** Each full letter represents approximately **1.25mm of internal circumference**. A half-size difference is roughly 0.6mm, small, but vital for comfort.
 
 ---
 

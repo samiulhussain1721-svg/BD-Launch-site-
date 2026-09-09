@@ -15,6 +15,9 @@ import {
   FileText,
 } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import { INSERT_PHONE, ATELIER_INSTAGRAM_DM_WEB, openInstagramDM, getHeroWhatsAppUrl } from '../config/atelier';
+import { StoneAllocationSelector } from './StoneAllocationSelector';
+import { PrivateAllocationLedger } from './PrivateAllocationLedger';
 
 const PIECE_TYPES = [
   { id: 'Engagement Ring', label: 'Engagement Ring', icon: '💍', desc: 'Solitaire, Halo, Trilogy & Bespoke Cuts' },
@@ -82,7 +85,11 @@ const generateBriefFormattedMessage = (brief: EnquiryBrief) => {
   return `Hello Brindley Diamonds, \n\nI have submitted a new Bespoke Portfolio request:\n• Brief ID: #${brief.id}\n• Client Name: ${brief.clientName}\n• Contact Email: ${brief.email}\n• Contact Phone: ${brief.phone || 'N/A'}\n• Item Type: ${brief.pieceType || 'N/A'}\n• Metal Preference: ${brief.metalPreference || 'N/A'}\n• Layout/Style Layout: ${styleVal}\n• Dimension/Length: ${dimensionVal}\n• Custom Notes: ${notesVal}\n\n(Inspiration images attached below)`;
 };
 
-export const ConsultationSection: React.FC = () => {
+interface ConsultationSectionProps {
+  onOpenConsultation?: () => void;
+}
+
+export const ConsultationSection: React.FC<ConsultationSectionProps> = ({ onOpenConsultation }) => {
   const shouldReduceMotion = useReducedMotion();
 
   // Piece Type state
@@ -171,6 +178,8 @@ export const ConsultationSection: React.FC = () => {
     setIsDragging(false);
   };
 
+  const [isSubmittingBrief, setIsSubmittingBrief] = useState(false);
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
@@ -179,7 +188,9 @@ export const ConsultationSection: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !email) return;
+    if (!name || !email || isSubmittingBrief) return;
+
+    setIsSubmittingBrief(true);
 
     const briefNumber = Math.floor(1000 + Math.random() * 9000);
     const newBrief: EnquiryBrief = {
@@ -205,7 +216,10 @@ export const ConsultationSection: React.FC = () => {
       createdAt: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
     };
 
-    setSubmittedBrief(newBrief);
+    setTimeout(() => {
+      setSubmittedBrief(newBrief);
+      setIsSubmittingBrief(false);
+    }, 400);
   };
 
   const handleReset = () => {
@@ -288,10 +302,10 @@ export const ConsultationSection: React.FC = () => {
               </p>
             </div>
             <a
-              href="https://wa.me/447721391972"
+              href={getHeroWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-ghost py-3 text-[10px] tracking-[0.2em] uppercase flex items-center justify-center gap-2"
+              className="btn-ghost min-h-[48px] py-3 text-[10px] tracking-[0.2em] uppercase flex items-center justify-center gap-2"
             >
               <span>[ Chat on WhatsApp ]</span>
             </a>
@@ -322,10 +336,11 @@ export const ConsultationSection: React.FC = () => {
               </p>
             </div>
             <a
-              href="https://instagram.com/brindleydiamonds"
+              href={ATELIER_INSTAGRAM_DM_WEB}
+              onClick={openInstagramDM}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-ghost py-3 text-[10px] tracking-[0.2em] uppercase flex items-center justify-center gap-2"
+              className="btn-ghost min-h-[48px] py-3 text-[10px] tracking-[0.2em] uppercase flex items-center justify-center gap-2"
             >
               <span>[ DM us on Instagram ]</span>
             </a>
@@ -357,12 +372,15 @@ export const ConsultationSection: React.FC = () => {
             </div>
             <a
               href="mailto:concierge@brindleydiamonds.com"
-              className="btn-ghost py-3 text-[10px] tracking-[0.2em] uppercase flex items-center justify-center gap-2"
+              className="btn-ghost min-h-[48px] py-3 text-[10px] tracking-[0.2em] uppercase flex items-center justify-center gap-2"
             >
               <span>[ Email Studio ]</span>
             </a>
           </motion.div>
         </div>
+
+        {/* Stone Allocation Selector Configurator */}
+        <StoneAllocationSelector onOpenConsultation={onOpenConsultation} />
 
         {/* Enquiry Form Container */}
         <motion.div
@@ -706,10 +724,11 @@ export const ConsultationSection: React.FC = () => {
                 {/* Submit */}
                 <button
                   type="submit"
-                  className="w-full btn-solid py-4 text-xs font-mono uppercase tracking-[0.22em] flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+                  disabled={isSubmittingBrief}
+                  className="w-full btn-solid min-h-[48px] py-4 text-xs font-mono uppercase tracking-[0.22em] flex items-center justify-center gap-2 cursor-pointer shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send className="w-4 h-4" />
-                  Submit Private Brief
+                  {isSubmittingBrief ? 'Preparing Dossier...' : 'Submit Private Brief'}
                 </button>
 
                 <div className="flex items-center justify-center gap-2 text-[10px] font-mono text-[#E2E8F0]/50 uppercase tracking-wider pt-2">
@@ -798,10 +817,10 @@ export const ConsultationSection: React.FC = () => {
               {/* Quick Launch Buttons */}
               <div className="space-y-3 max-w-md mx-auto pt-2">
                 <a
-                  href={`https://wa.me/447721391972?text=${encodeURIComponent(generateBriefFormattedMessage(submittedBrief))}`}
+                  href={`https://wa.me/${INSERT_PHONE}?text=${encodeURIComponent(generateBriefFormattedMessage(submittedBrief))}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full btn-solid py-3.5 text-xs font-mono uppercase tracking-wider flex items-center justify-between px-6 cursor-pointer"
+                  className="w-full btn-solid min-h-[48px] py-3.5 text-xs font-mono uppercase tracking-wider flex items-center justify-between px-6 cursor-pointer"
                 >
                   <span className="flex items-center gap-2">
                     <MessageCircle className="w-4 h-4 text-[#25D366]" />
@@ -817,10 +836,24 @@ export const ConsultationSection: React.FC = () => {
                 </div>
 
                 <a
+                  href={ATELIER_INSTAGRAM_DM_WEB}
+                  onClick={openInstagramDM}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full btn-ghost min-h-[48px] py-3.5 text-xs font-mono uppercase tracking-wider flex items-center justify-between px-6 cursor-pointer border-white/20 hover:border-[#ECE5DA]"
+                >
+                  <span className="flex items-center gap-2">
+                    <Instagram className="w-4 h-4 text-[#ECE5DA]" />
+                    DM on Instagram (@Brindleydiamonds)
+                  </span>
+                  <ArrowRight className="w-4 h-4" />
+                </a>
+
+                <a
                   href={`mailto:concierge@brindleydiamonds.com?subject=${encodeURIComponent(`Bespoke Enquiry Brief #${submittedBrief.id} - ${submittedBrief.clientName}`)}&body=${encodeURIComponent(generateBriefFormattedMessage(submittedBrief))}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full btn-ghost py-3.5 text-xs font-mono uppercase tracking-wider flex items-center justify-between px-6 cursor-pointer"
+                  className="w-full btn-ghost min-h-[48px] py-3.5 text-xs font-mono uppercase tracking-wider flex items-center justify-between px-6 cursor-pointer"
                 >
                   <span className="flex items-center gap-2">
                     <Mail className="w-4 h-4" />
@@ -840,6 +873,11 @@ export const ConsultationSection: React.FC = () => {
             </motion.div>
           )}
         </motion.div>
+
+        {/* Private Allocation Ledger (Lead Capture) */}
+        <div className="mt-16">
+          <PrivateAllocationLedger />
+        </div>
       </div>
     </section>
   );

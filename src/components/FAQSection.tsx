@@ -10,11 +10,11 @@ interface FAQItem {
 const FAQS: FAQItem[] = [
   {
     question: 'How does Brindley Diamonds offer significantly lower pricing without compromising quality?',
-    answer: 'Traditional high-street jewellers carry huge overheads: premium retail store leases, armed security, extensive showroom staff, and multiple layers of middlemen distributors. We cut out all physical showrooms and secondary distributors. We source directly from top-tier IGI-certified diamond cutters and craft every ring to order in our Birmingham Jewellery Quarter workshop. Every penny you spend goes directly into diamond carat, colour, clarity, and precious metal weight—not our rent.',
+    answer: 'Traditional high-street jewellers carry huge overheads: premium retail store leases, armed security, extensive showroom staff, and multiple layers of middlemen distributors. We cut out all physical showrooms and secondary distributors. We source directly from top-tier IGI-certified diamond cutters and craft every ring to order in our Birmingham Jewellery Quarter workshop. Every penny you spend goes directly into diamond carat, colour, clarity, and precious metal weight, not our rent.',
   },
   {
     question: 'Are all Brindley diamonds genuine, certified, and authenticated?',
-    answer: 'Absolutely. Every centre diamond we source is independently graded and certified by the International Gemological Institute (IGI)—the global benchmark in diamond authentication. Each diamond comes with an official digital and physical certificate verifying its 4Cs, and features a micro-laser inscription on its girdle matching the unique certificate number, verifiable under 10x magnification.',
+    answer: 'Absolutely. Every centre diamond we source is independently graded and certified by the International Gemological Institute (IGI), the global benchmark in diamond authentication. Each diamond comes with an official digital and physical certificate verifying its 4Cs, and features a micro-laser inscription on its girdle matching the unique certificate number, verifiable under 10x magnification.',
   },
   {
     question: 'Can I design a completely bespoke ring from a Pinterest picture or sketch?',
@@ -22,7 +22,7 @@ const FAQS: FAQItem[] = [
   },
   {
     question: 'How long does a bespoke engagement ring take to craft?',
-    answer: 'Our standard bespoke timeline is 2 to 4 weeks from stone approval to delivery. If you have an urgent proposal timeline, please inform our team during your consultation—we can frequently accommodate expedited creation within 10 to 14 working days.',
+    answer: 'Our standard bespoke timeline is 2 to 4 weeks from stone approval to delivery. If you have an urgent proposal timeline, please inform our team during your consultation; we can frequently accommodate expedited creation within 10 to 14 working days.',
   },
   {
     question: 'How do consultations work if you do not have a public showroom?',

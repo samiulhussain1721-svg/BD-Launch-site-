@@ -44,7 +44,7 @@ export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({
           animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
           exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 15, scale: 0.9 }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-6 right-6 z-40 flex items-center"
+          className="fixed bottom-6 right-6 z-40 hidden md:flex items-center"
         >
           <a
             href={whatsappUrl}

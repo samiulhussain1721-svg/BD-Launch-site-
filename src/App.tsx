@@ -9,10 +9,12 @@ import { VaultGazetteSection } from './components/VaultGazetteSection';
 import { GazetteArticleView } from './components/GazetteArticleView';
 import { VaultAdminModal } from './components/VaultAdminModal';
 import { ConsultationSection } from './components/ConsultationSection';
+import { InstagramDMBanner } from './components/InstagramDMBanner';
 import { FAQSection } from './components/FAQSection';
 import { Footer } from './components/Footer';
 import { ConsultationModal } from './components/ConsultationModal';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
+import { MobileStickyActionDock } from './components/MobileStickyActionDock';
 import { ScrollDiamondBracelet } from './components/ScrollDiamondBracelet';
 import { Ring, GazetteArticle } from './types';
 import { RINGS_DATA } from './data/rings';
@@ -182,7 +184,10 @@ export default function App() {
               />
 
               {/* Consultation & Bespoke Enquiry Form */}
-              <ConsultationSection />
+              <ConsultationSection onOpenConsultation={handleOpenConsultation} />
+
+              {/* Instagram DM Editorial Banner */}
+              <InstagramDMBanner />
 
               {/* FAQ Accordion */}
               <FAQSection />
@@ -197,8 +202,11 @@ export default function App() {
         />
       </div>
 
-      {/* Floating Sticky WhatsApp Consultation Button */}
+      {/* Floating Sticky WhatsApp Consultation Button (Desktop Only) */}
       <FloatingWhatsApp />
+
+      {/* Sticky Dual Action Dock (Mobile Only) */}
+      <MobileStickyActionDock />
 
       {/* Interactive Private Brief Modal */}
       <ConsultationModal

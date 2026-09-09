@@ -75,12 +75,13 @@ export const ScrollDiamondBracelet: React.FC<ScrollDiamondBraceletProps> = ({
   const targetTimeRef = useRef(0);
   const animFrameIdRef = useRef<number | null>(null);
 
-  // Check video ready state on mount and attach listeners
+  // Initialise video in paused state: animation ONLY moves as the user scrolls
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
     const markReady = () => {
+      video.pause();
       setIsVideoReady(true);
       if (video.currentTime === 0) {
         try {
@@ -106,7 +107,7 @@ export const ScrollDiamondBracelet: React.FC<ScrollDiamondBraceletProps> = ({
     };
   }, []);
 
-  // Synchronize target video timestamp strictly with user scroll position
+  // Synchronise target video timestamp strictly with user scroll position, looping continuously across cycles
   useEffect(() => {
     let ticking = false;
 
@@ -114,17 +115,21 @@ export const ScrollDiamondBracelet: React.FC<ScrollDiamondBraceletProps> = ({
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const scrollElement = document.scrollingElement || document.documentElement || document.body;
-          const totalHeight = Math.max(1, scrollElement.scrollHeight - window.innerHeight);
+          // Responsive track height per complete loop cycle (e.g. 1.6x viewport height)
+          const responsiveTrackHeight = Math.max(window.innerHeight * 1.6, 900);
           const scrollY = window.scrollY || window.pageYOffset || scrollElement.scrollTop || 0;
-          const current = Math.max(0, Math.min(1, scrollY / totalHeight));
+          
+          // Modulo wrap so scrolling through the page continuously re-loops the animation seamlessly
+          const cycleProgress = ((scrollY / responsiveTrackHeight) % 1.0 + 1.0) % 1.0;
+          const totalDuration = DEFAULT_BRACELET_CONFIG.videoDuration;
 
-          // Clamp target time strictly between 0.0s and 8.0s
-          targetTimeRef.current = Math.max(0, Math.min(DEFAULT_BRACELET_CONFIG.videoDuration, current * DEFAULT_BRACELET_CONFIG.videoDuration));
+          // Target time is strictly tied to scroll progress; clamps slightly before EOF to ensure smooth loop
+          targetTimeRef.current = cycleProgress * (totalDuration - 0.02);
 
-          // Calculate current milestone
+          // Calculate current milestone across continuous loops
           let activeIndex = 0;
           for (let i = SCROLL_MILESTONES.length - 1; i >= 0; i--) {
-            if (current >= SCROLL_MILESTONES[i].progress - 0.08) {
+            if (cycleProgress >= SCROLL_MILESTONES[i].progress - 0.08) {
               activeIndex = i;
               break;
             }
@@ -150,25 +155,40 @@ export const ScrollDiamondBracelet: React.FC<ScrollDiamondBraceletProps> = ({
     };
   }, [onMilestoneChange]);
 
-  // High-performance RAF scroll-scrub loop: seeks smoothly without decoder stutter
+  // High-performance RAF scroll-scrub loop: strictly advances only when user scrolls, looping continuously
   useEffect(() => {
     let isRunning = true;
+    const LERP_FACTOR = 0.28; // Snappy, responsive tracking of user scroll
+    const totalDuration = DEFAULT_BRACELET_CONFIG.videoDuration;
 
     const updateVideoFrame = () => {
       if (!isRunning) return;
 
       const video = videoRef.current;
       if (video && isVideoReady) {
-        const target = targetTimeRef.current;
-        const diff = target - video.currentTime;
+        // Ensure video is never auto-playing; it only advances through explicit scrub
+        if (!video.paused) {
+          video.pause();
+        }
 
+        const target = targetTimeRef.current;
+        let diff = target - video.currentTime;
+
+        // Seamless periodic boundary wrapping across 0s <-> 8s loop
+        if (diff > totalDuration / 2) diff -= totalDuration;
+        if (diff < -totalDuration / 2) diff += totalDuration;
+
+        // Only update frame position when user has scrolled and there is a difference
         if (Math.abs(diff) > 0.003) {
-          if (Math.abs(diff) > 0.6) {
-            // Rapid fast scroll: jump directly to stay in sync with user
-            video.currentTime = target;
+          if (Math.abs(diff) > 1.5) {
+            // Large jump (rapid swipe, anchor link jump): seek directly to stay in sync
+            video.currentTime = Math.max(0.001, Math.min(totalDuration - 0.02, target));
           } else if (!video.seeking) {
-            // Smooth progressive tracking
-            video.currentTime += diff * 0.4;
+            // Smooth progressive tracking with boundary wrap
+            let nextTime = video.currentTime + diff * LERP_FACTOR;
+            if (nextTime >= totalDuration) nextTime -= totalDuration;
+            if (nextTime < 0) nextTime += totalDuration;
+            video.currentTime = Math.max(0.001, Math.min(totalDuration - 0.02, nextTime));
           }
         }
       }
@@ -203,25 +223,33 @@ export const ScrollDiamondBracelet: React.FC<ScrollDiamondBraceletProps> = ({
         }}
       />
 
-      {/* 3. Pure Scroll-Bound Cinematic Video Viewport */}
+      {/* 3. Pure Cinematic Scroll-Driven Video Viewport */}
       <div className="absolute inset-0 w-full h-full">
         <video
           ref={videoRef}
           src={DEFAULT_BRACELET_CONFIG.videoSrc}
           muted
           playsInline
+          {...{ 'webkit-playsinline': 'true' }}
           preload="auto"
           disablePictureInPicture
           onLoadedMetadata={(e) => {
             setIsVideoReady(true);
             try {
+              e.currentTarget.pause();
               e.currentTarget.currentTime = 0.001;
             } catch {
-              // ignore initial seek restriction
+              // ignore initial restriction
             }
           }}
-          onLoadedData={() => setIsVideoReady(true)}
-          onCanPlay={() => setIsVideoReady(true)}
+          onLoadedData={(e) => {
+            setIsVideoReady(true);
+            e.currentTarget.pause();
+          }}
+          onCanPlay={(e) => {
+            setIsVideoReady(true);
+            e.currentTarget.pause();
+          }}
           className="w-full h-full object-cover object-center filter brightness-95 contrast-110 saturate-105"
         >
           <source src={DEFAULT_BRACELET_CONFIG.videoSrc} type="video/mp4" />

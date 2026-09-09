@@ -11,15 +11,23 @@
     --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  html {
+    overflow-x: clip;
+  }
+
   body {
     background-color: var(--bg);
     color: var(--accent);
     font-family: 'Inter', sans-serif;
     font-weight: 300;
     scroll-behavior: smooth;
-    overflow-x: hidden;
+    overflow-x: clip;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  input, select, textarea {
+    scroll-margin-bottom: 5rem;
   }
 
   h1, h2, h3, h4, .font-display {

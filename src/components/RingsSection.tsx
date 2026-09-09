@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Ring, JewelleryCategory } from '../types';
-import { Sparkles, ArrowRight, MessageCircle } from 'lucide-react';
+import { Sparkles, ArrowRight, MessageCircle, Play } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Logo } from './Logo';
+import { getProductWhatsAppUrl, INSERT_PHONE } from '../config/atelier';
 
 interface RingsSectionProps {
   rings: Ring[];
@@ -227,11 +228,26 @@ export const RingsSection: React.FC<RingsSectionProps> = ({
                   </div>
                 </div>
 
-                <div className="px-6 py-4 bg-[#10191D]/80 border-t border-white/10 flex items-center justify-between">
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#ECE5DA]">
-                    {piece.cta}
-                  </span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#ECE5DA] group-hover:translate-x-1.5 transition-transform" />
+                <div className="px-4 py-3 bg-[#10191D]/90 border-t border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
+                  <a
+                    href={getProductWhatsAppUrl(piece.title)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex-1 min-h-[48px] px-3 py-2 bg-white/[0.04] hover:bg-[#ECE5DA] hover:text-[#10191D] border border-white/10 hover:border-[#ECE5DA] text-[9.5px] font-mono font-semibold uppercase tracking-wider text-[#ECE5DA] rounded-xs flex items-center justify-center gap-1.5 transition-all shadow-sm"
+                    title={`View 4K video and specs for ${piece.title}`}
+                  >
+                    <MessageCircle className="w-3.5 h-3.5 shrink-0" />
+                    <span>See 4K Video &amp; Specs</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => handleCardClick(piece)}
+                    className="min-h-[48px] px-3 py-2 border border-white/10 hover:border-[#ECE5DA]/50 text-[9.5px] font-mono uppercase tracking-wider text-white/80 hover:text-white rounded-xs flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                  >
+                    <span>Reserve Allocation</span>
+                    <ArrowRight className="w-3 h-3 text-[#ECE5DA] shrink-0" />
+                  </button>
                 </div>
               </motion.div>
             ))}
@@ -316,11 +332,25 @@ export const RingsSection: React.FC<RingsSectionProps> = ({
                   </div>
                 </div>
 
-                <div className="px-6 py-4 bg-[#10191D]/80 border-t border-white/10 flex items-center justify-between group-hover:bg-[#10191D] transition-colors">
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#ECE5DA]">
-                    Enquire Cut
-                  </span>
-                  <ArrowRight className="w-3.5 h-3.5 text-[#ECE5DA] group-hover:translate-x-1.5 transition-transform" />
+                <div className="px-4 py-3 bg-[#10191D]/90 border-t border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
+                  <a
+                    href={getProductWhatsAppUrl(`${cut.name} (${cut.recommendedCarats})`)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex-1 min-h-[48px] px-3 py-2 bg-[#ECE5DA] text-[#10191D] hover:bg-white text-[9.5px] font-mono font-semibold uppercase tracking-wider rounded-xs flex items-center justify-center gap-1.5 transition-all shadow-sm"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5 shrink-0" />
+                    <span>Enquire on Stone</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={onOpenConsultation}
+                    className="min-h-[48px] px-3 py-2 border border-white/10 hover:border-[#ECE5DA]/50 text-[9.5px] font-mono uppercase tracking-wider text-white/80 hover:text-white rounded-xs flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                  >
+                    <span>Dossier</span>
+                    <ArrowRight className="w-3 h-3 text-[#ECE5DA] shrink-0" />
+                  </button>
                 </div>
               </motion.div>
             ))}
@@ -351,19 +381,19 @@ export const RingsSection: React.FC<RingsSectionProps> = ({
 
           <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
             <a
-              href="https://wa.me/447721391972?text=Hello%20Brindley%20Diamonds,%20I%20would%20like%20to%20discuss%20a%20bespoke%20commission"
+              href={`https://wa.me/${INSERT_PHONE}?text=Hi%20Brindley%20Diamonds%2C%20I%20would%20like%20to%20inquire%20about%20a%20private%20bespoke%20commission.`}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-solid btn-glow py-3 px-6 text-[10px] tracking-widest uppercase flex items-center gap-2 cursor-pointer shadow-lg"
+              className="btn-solid btn-glow min-h-[48px] py-3 px-6 text-[10px] tracking-widest uppercase flex items-center gap-2 cursor-pointer shadow-lg"
             >
               <MessageCircle className="w-3.5 h-3.5 text-[#10191D]" />
-              <span>WhatsApp</span>
+              <span>Direct Atelier Line</span>
             </a>
             <button
               onClick={onOpenConsultation}
-              className="btn-ghost py-3 px-5 text-[10px] tracking-widest uppercase text-[#ECE5DA] hover:text-white cursor-pointer"
+              className="btn-ghost min-h-[48px] py-3 px-5 text-[10px] tracking-widest uppercase text-[#ECE5DA] hover:text-white cursor-pointer"
             >
-              Book Consultation
+              Reserve Allocation
             </button>
           </div>
         </motion.div>

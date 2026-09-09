@@ -143,5 +143,5 @@ export const CARAT_OPTIONS = [
   '2.0ct - 3.0ct',
   '3.0ct - 5.0ct',
   'Bespoke 5.0ct+ Masterpieces',
-  'Open to advisor recommendations'
+  'Open to adviser recommendations'
 ];

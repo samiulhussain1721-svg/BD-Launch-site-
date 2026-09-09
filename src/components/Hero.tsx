@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { Send, MessageCircle, Sparkles, ArrowDown, ShieldCheck, Ruler } from 'lucide-react';
 import { Logo } from './Logo';
 import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
+import { getHeroWhatsAppUrl, openInstagramDM, ATELIER_INSTAGRAM_DM_WEB } from '../config/atelier';
 
 interface HeroProps {
   onOpenConsultation: () => void;
@@ -128,20 +129,19 @@ export const Hero: React.FC<HeroProps> = ({ onOpenConsultation }) => {
             className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-2xl mx-auto mb-16 w-full sm:w-auto"
           >
             <a
-              href="https://wa.me/447721391972"
+              href={getHeroWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-solid btn-glow w-full sm:w-auto min-w-[220px] justify-center shadow-xl group cursor-pointer"
+              className="btn-solid btn-glow w-full sm:w-auto min-w-[220px] min-h-[48px] justify-center shadow-xl group cursor-pointer"
             >
-              <MessageCircle className="w-4 h-4 text-[#25D366] transition-transform group-hover:scale-110" />
-              <span>Chat on WhatsApp</span>
+              <MessageCircle className="w-4 h-4 text-[#10191D] transition-transform group-hover:scale-110" />
+              <span>Enquire via WhatsApp</span>
             </a>
 
             <a
-              href="https://instagram.com/brindleydiamonds"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-ghost btn-glow w-full sm:w-auto min-w-[220px] justify-center group cursor-pointer border-white/20 hover:border-[#ECE5DA]"
+              href={ATELIER_INSTAGRAM_DM_WEB}
+              onClick={openInstagramDM}
+              className="btn-ghost btn-glow w-full sm:w-auto min-w-[220px] min-h-[48px] justify-center group cursor-pointer border-white/20 hover:border-[#ECE5DA]"
             >
               <Send className="w-3.5 h-3.5 text-[#ECE5DA] transition-transform group-hover:translate-x-0.5" />
               <span>DM on Instagram</span>
@@ -149,10 +149,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenConsultation }) => {
 
             <button
               onClick={onOpenConsultation}
-              className="btn-ghost btn-glow w-full sm:w-auto min-w-[220px] justify-center border-[#ECE5DA]/40 text-[#ECE5DA] hover:border-[#ECE5DA] hover:text-white cursor-pointer"
+              className="btn-ghost btn-glow w-full sm:w-auto min-w-[220px] min-h-[48px] justify-center border-[#ECE5DA]/40 text-[#ECE5DA] hover:border-[#ECE5DA] hover:text-white cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#ECE5DA]" />
-              <span>Book Consultation</span>
+              <span>Reserve Allocation</span>
             </button>
           </motion.div>
 

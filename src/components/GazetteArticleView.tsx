@@ -81,7 +81,7 @@ export const GazetteArticleView: React.FC<GazetteArticleViewProps> = ({
     .filter((a) => a.id !== article.id && a.status === 'published')
     .slice(0, 2);
 
-  const whatsappMessage = `Hello Brindley Diamonds, I was reading your Gazette editorial "${article.title}" and would love to consult with a Private Client Advisor regarding a bespoke piece.`;
+  const whatsappMessage = `Hello Brindley Diamonds, I was reading your Gazette editorial "${article.title}" and would love to consult with a Private Client Adviser regarding a bespoke piece.`;
 
   return (
     <motion.article
@@ -199,7 +199,7 @@ export const GazetteArticleView: React.FC<GazetteArticleViewProps> = ({
           </h3>
 
           <p className="text-sm text-[#E2E8F0]/70 max-w-lg mx-auto font-light leading-relaxed mb-8">
-            Chat with our Private Client Advisor on WhatsApp to source certified loose diamonds, refine 3D CAD sketches, or discuss your engagement ring timeline.
+            Chat with our Private Client Adviser on WhatsApp to source certified loose diamonds, refine 3D CAD sketches, or discuss your engagement ring timeline.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">

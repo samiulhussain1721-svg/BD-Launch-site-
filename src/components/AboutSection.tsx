@@ -30,12 +30,12 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenConsultation }
     {
       icon: '💎',
       title: 'Our Live Vault Stock',
-      desc: 'We carry a hand-picked collection of loose diamond stock right here in our UK studio vault. If a stone in our current collection matches what you’re searching for, it was meant to be—simply ask us, and we will send over an unedited, high-definition video.',
+      desc: 'We carry a hand-picked collection of loose diamond stock right here in our UK studio vault. If a stone in our current collection matches what you’re searching for, it was meant to be. Simply ask us, and we will send over an unedited, high-definition video.',
     },
     {
       icon: '📸',
       title: 'Send Us Your Inspo Pictures',
-      desc: 'We know stunning ring designs pop up on your feed and you forward them to your friends—so why not send them to us? Share your favourite screenshots or Pinterest boards, and we’ll map out how to build it for significantly less.',
+      desc: 'We know stunning ring designs pop up on your feed and you forward them to your friends, so why not send them to us? Share your favourite screenshots or Pinterest boards, and we’ll map out how to build it for significantly less.',
     },
     {
       icon: '🛠️',
@@ -152,7 +152,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenConsultation }
             Ready to Explore Your Options?
           </h3>
           <p className="text-xs sm:text-sm text-[#E2E8F0]/80 font-light max-w-lg mx-auto mb-8 leading-relaxed">
-            Connect directly with our studio team. No pressure, no obligation—just real guidance on creating your perfect piece.
+            Connect directly with our studio team. No pressure, no obligation, just real guidance on creating your perfect piece.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

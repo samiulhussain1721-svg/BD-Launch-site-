@@ -9,7 +9,7 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigateToGazette, onOpenAdmin }) => {
   return (
-    <footer className="py-12 bg-[#080C0E]/90 backdrop-blur-md border-t border-white/10 text-[#E2E8F0]">
+    <footer className="pt-12 pb-24 md:py-12 bg-[#080C0E]/90 backdrop-blur-md border-t border-white/10 text-[#E2E8F0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
         <div>
           <div className="flex items-center justify-center md:justify-start gap-3 mb-2">

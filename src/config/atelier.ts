@@ -24,7 +24,7 @@ export const getHeroWhatsAppUrl = (phone = ATELIER_PHONE): string => {
  */
 export const getProductWhatsAppUrl = (productName: string, phone = ATELIER_PHONE): string => {
   const cleanName = productName.trim();
-  return `https://wa.me/${phone}?text=Hi%20Brindley%20Diamonds%2C%20I%20am%20viewing%20the%20${encodeURIComponent(cleanName)}%20and%20would%20like%20to%20see%20the%204K%20video%20and%20specifications.`;
+  return `https://wa.me/${phone}?text=Hi%20Brindley%20Diamonds%2C%20I%20am%20viewing%20the%20${encodeURIComponent(cleanName)}%20and%20would%20like%20to%20enquire%20about%20availability%20and%20specifications.`;
 };
 
 /**

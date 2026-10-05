@@ -31,7 +31,7 @@ const CORE_DIAMOND_CUTS: DiamondCutInfo[] = [
     subtitle: '57-Facet Optical Fire',
     ratio: '1.00 : 1.00 Symmetry',
     fireRating: 'Maximum Optical Dispersion',
-    image: getAssetUrl('images/gallery/solitaire_round_classic.png'),
+    image: '/images/gallery/solitaire_round_classic.png',
     description: 'The mathematical peak of light refraction. Cut with exacting angles to return 100% of entering light back to the eye in vivid spectral flashes.',
     bestFor: 'Six-prong cathedral mounts & timeless minimalist bands',
     recommendedCarats: '1.00ct – 2.50ct',
@@ -42,7 +42,7 @@ const CORE_DIAMOND_CUTS: DiamondCutInfo[] = [
     subtitle: 'Elongated Brilliance',
     ratio: '1.35 – 1.45 Ratio',
     fireRating: 'Exceptional Scintillation',
-    image: getAssetUrl('images/gallery/solitaire_oval.png'),
+    image: '/images/gallery/solitaire_oval.png',
     description: 'An elegant cut offering a flattering, lengthening effect on the finger with surface spread that optimises carat presentation.',
     bestFor: 'Modern solitaires & pavé shoulders',
     recommendedCarats: '1.50ct – 3.00ct',
@@ -53,7 +53,7 @@ const CORE_DIAMOND_CUTS: DiamondCutInfo[] = [
     subtitle: 'Hall of Mirrors',
     ratio: '1.30 – 1.50 Ratio',
     fireRating: 'Dramatic Step-Cut Flashes',
-    image: getAssetUrl('images/gallery/solitaire_emerald.png'),
+    image: '/images/gallery/solitaire_emerald.png',
     description: 'Distinctive rectangular step-cuts with beveled corners and open tables that highlight crystalline clarity and vintage architectural grandeur.',
     bestFor: 'Art Deco settings, trapezoid trilogies & sleek platinum bezels',
     recommendedCarats: '1.50ct – 4.00ct',
@@ -64,7 +64,7 @@ const CORE_DIAMOND_CUTS: DiamondCutInfo[] = [
     subtitle: 'Pillow Contour',
     ratio: '1.00 – 1.15 Ratio',
     fireRating: 'Deep Antique Sparkle',
-    image: getAssetUrl('images/gallery/solitaire_cushion.png'),
+    image: '/images/gallery/solitaire_cushion.png',
     description: 'Softened rounded corners reminiscent of vintage heirloom stones, combining rich historical charm with precision facet performance.',
     bestFor: 'Vintage halos, three-stone trilogies & platinum settings',
     recommendedCarats: '1.75ct – 3.50ct',
@@ -75,7 +75,7 @@ const CORE_DIAMOND_CUTS: DiamondCutInfo[] = [
     subtitle: '70-Facet Hybrid Radiance',
     ratio: '1.15 – 1.35 Ratio',
     fireRating: 'Electrifying Crushed Ice Fire',
-    image: getAssetUrl('images/gallery/solitaire_radiant.png'),
+    image: '/images/gallery/solitaire_radiant.png',
     description: 'Combines the emerald silhouette with brilliant-cut faceting, yielding intense multidirectional sparkle and disguised natural inclusions.',
     bestFor: 'Triple-row micro-pavé bands & hidden halo mounts',
     recommendedCarats: '2.00ct – 3.50ct',
@@ -86,7 +86,7 @@ const CORE_DIAMOND_CUTS: DiamondCutInfo[] = [
     subtitle: 'Canary Radiance',
     ratio: 'Radiant / Cushion Cut',
     fireRating: 'Intense Warm Fire',
-    image: getAssetUrl('images/gallery/fancy_yellow.png'),
+    image: '/images/gallery/fancy_yellow.png',
     description: 'Distinctive fancy coloured diamonds with natural golden sunshine warmth, paired masterfully with 18k yellow gold prongs.',
     bestFor: 'Bespoke two-tone yellow gold & platinum commissions',
     recommendedCarats: '2.00ct – 4.00ct',
@@ -251,25 +251,14 @@ export const RingsSection: React.FC<RingsSectionProps> = ({
                   </div>
                 </div>
 
-                <div className="px-4 py-3 bg-[#10191D]/90 border-t border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2">
-                  <a
-                    href={getProductWhatsAppUrl(piece.title)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="flex-1 min-h-[48px] px-3 py-2 bg-white/[0.04] hover:bg-[#ECE5DA] hover:text-[#10191D] border border-white/10 hover:border-[#ECE5DA] text-[9.5px] font-mono font-semibold uppercase tracking-wider text-[#ECE5DA] rounded-xs flex items-center justify-center gap-1.5 transition-all shadow-sm"
-                    title={`View 4K video and specs for ${piece.title}`}
-                  >
-                    <MessageCircle className="w-3.5 h-3.5 shrink-0" />
-                    <span>See 4K Video &amp; Specs</span>
-                  </a>
+                <div className="px-4 py-3 bg-[#10191D]/90 border-t border-white/10">
                   <button
                     type="button"
                     onClick={() => handleCardClick(piece)}
-                    className="min-h-[48px] px-3 py-2 border border-white/10 hover:border-[#ECE5DA]/50 text-[9.5px] font-mono uppercase tracking-wider text-white/80 hover:text-white rounded-xs flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                    className="w-full min-h-[44px] px-4 py-2.5 bg-white/[0.04] hover:bg-[#ECE5DA] hover:text-[#10191D] border border-white/10 hover:border-[#ECE5DA] text-[10px] font-mono font-semibold uppercase tracking-[0.16em] text-[#ECE5DA] rounded-xs flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer group/btn"
                   >
-                    <span>Reserve Allocation</span>
-                    <ArrowRight className="w-3 h-3 text-[#ECE5DA] shrink-0" />
+                    <span>{piece.cta || 'Reserve Allocation'}</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-[#ECE5DA] group-hover/btn:text-[#10191D] group-hover/btn:translate-x-1 transition-all shrink-0" />
                   </button>
                 </div>
               </motion.div>

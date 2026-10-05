@@ -1,9 +1,7 @@
 /**
- * Resolves static asset paths against Vite's base URL (e.g. '/BD-Launch-site-/')
- * ensuring assets load reliably in development, preview, and GitHub Pages production.
- *
- * Fully idempotent: calling getAssetUrl multiple times on the same path will never
- * create duplicate base prefixes.
+ * Resolves static asset paths for the live custom domain (serving directly from '/').
+ * Strips any legacy subfolder paths (e.g. '/BD-Launch-site-/') and ensures clean,
+ * absolute public root paths (e.g. '/images/gallery/solitaire_round_classic.png').
  */
 export function getAssetUrl(path: string): string {
   if (!path) return '';
@@ -16,27 +14,20 @@ export function getAssetUrl(path: string): string {
     return path;
   }
 
-  const base = import.meta.env.BASE_URL || '/';
-  const cleanBase = base.endsWith('/') ? base : `${base}/`;
-
-  // If path already starts with cleanBase or base, return it directly
-  if (path.startsWith(cleanBase)) {
-    return path;
+  // Strip any legacy repository / project subfolder prefix
+  let clean = path;
+  while (clean.startsWith('/BD-Launch-site-')) {
+    clean = clean.slice('/BD-Launch-site-'.length);
   }
-  if (path.startsWith(base)) {
-    return path;
+  while (clean.startsWith('BD-Launch-site-')) {
+    clean = clean.slice('BD-Launch-site-'.length);
   }
 
-  // Also check if path has leading slash matching base without leading slash
-  const baseWithoutSlash = base.replace(/^\/+|\/+$/g, '');
-  if (baseWithoutSlash && path.includes(baseWithoutSlash)) {
-    // Avoid double prefixing if path already includes the subpath
-    const normalized = path.startsWith('/') ? path : `/${path}`;
-    if (normalized.startsWith(`/${baseWithoutSlash}/`)) {
-      return normalized;
-    }
+  // Remove leading ./ if present
+  if (clean.startsWith('./')) {
+    clean = clean.slice(2);
   }
 
-  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-  return `${cleanBase}${cleanPath}`;
+  // Return clean absolute root path
+  return clean.startsWith('/') ? clean : `/${clean}`;
 }

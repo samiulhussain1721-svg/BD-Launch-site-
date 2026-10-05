@@ -5,18 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Brindley Diamonds — Bespoke Fine Jewellery Atelier</title>
     <meta name="description" content="Diamonds are formed under pressure. Acquiring them shouldn't be. Bespoke IGI-certified fine jewellery atelier in Birmingham Jewellery Quarter." />
+    
+    <!-- OpenGraph Social Metadata -->
+    <meta property="og:site_name" content="Brindley Diamonds" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:type" content="website" />
     <meta property="og:title" content="Brindley Diamonds — Bespoke Fine Jewellery Atelier" />
     <meta property="og:description" content="Diamonds are formed under pressure. Acquiring them shouldn't be. Bespoke IGI-certified fine jewellery atelier in Birmingham Jewellery Quarter." />
+    <meta property="og:image" content="/images/gallery/solitaire_round_classic.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Brindley Diamonds Bespoke Solitaire Collection" />
+
+    <!-- Twitter / X Card Metadata -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Brindley Diamonds — Bespoke Fine Jewellery Atelier" />
+    <meta name="twitter:description" content="Diamonds are formed under pressure. Acquiring them shouldn't be. Bespoke IGI-certified fine jewellery atelier in Birmingham Jewellery Quarter." />
+    <meta name="twitter:image" content="/images/gallery/solitaire_round_classic.png" />
+
+    <!-- Canonical URL fallback -->
+    <link rel="canonical" href="https://brindleydiamonds.com/" />
+
     <link rel="icon" type="image/png" href="/firefly.png" />
     <link rel="apple-touch-icon" href="/firefly.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- Schema.org JSON-LD Structured Data: Store & Brand Identity -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "JewelryStore",
+          "@id": "https://brindleydiamonds.com/#store",
+          "name": "Brindley Diamonds",
+          "alternateName": "Brindley Diamonds Ltd",
+          "url": "https://brindleydiamonds.com/",
+          "logo": "https://brindleydiamonds.com/firefly.png",
+          "image": "https://brindleydiamonds.com/images/gallery/solitaire_round_classic.png",
+          "description": "Bespoke fine jewellery atelier in Birmingham Jewellery Quarter specialising in IGI/GIA certified diamonds, engagement rings, tennis bracelets, and custom commissions.",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Birmingham Jewellery Quarter",
+            "addressLocality": "Birmingham",
+            "addressRegion": "West Midlands",
+            "postalCode": "B18",
+            "addressCountry": "GB"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 52.4862,
+            "longitude": -1.9125
+          },
+          "priceRange": "££££",
+          "currenciesAccepted": "GBP",
+          "telephone": "+447721391972",
+          "email": "info@brindleydiamonds.com",
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Atelier Fine Jewellery Collection",
+            "itemListElement": [
+              {
+                "@type": "OfferCatalog",
+                "name": "Engagement Rings",
+                "itemListElement": [
+                  { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "The Solitaire" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Knife-Edge Four-Prong Solitaire" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Oval Cut Pavé Solitaire" } }
+                ]
+              },
+              {
+                "@type": "OfferCatalog",
+                "name": "Bracelets",
+                "itemListElement": [
+                  { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Diamond Tennis Bracelet" } },
+                  { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Oval Cut Tennis Bracelet" } }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body class="bg-[#080C0E] text-[#E2E8F0] antialiased selection:bg-[#ECE5DA] selection:text-[#080C0E]">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-
-

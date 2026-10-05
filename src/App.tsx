@@ -21,6 +21,7 @@ import { ScrollDiamondBracelet } from './components/ScrollDiamondBracelet';
 import { Ring, GazetteArticle } from './types';
 import { RINGS_DATA } from './data/rings';
 import { getGazetteArticles, getArticleBySlug } from './utils/gazetteStorage';
+import { setCollectionSEO, setProductSEO, clearProductSEO } from './utils/seo';
 
 export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,10 +41,23 @@ export default function App() {
     setIsPrivacyOpen(true);
   };
 
+  // Sync Product OpenGraph & Schema.org when a ring is selected
+  useEffect(() => {
+    if (selectedRing) {
+      setProductSEO(selectedRing);
+    } else if (!selectedArticle) {
+      clearProductSEO();
+      setCollectionSEO(RINGS_DATA);
+    }
+  }, [selectedRing, selectedArticle]);
+
   // Load articles & handle routing
   useEffect(() => {
     const loadedArticles = getGazetteArticles();
     setArticles(loadedArticles);
+
+    // Initialise Collection Catalog Schema & baseline OpenGraph
+    setCollectionSEO(RINGS_DATA);
 
     // Check URL hash / pathname on initial load
     const handleUrlRouting = () => {
@@ -58,6 +72,13 @@ export default function App() {
         handleOpenPrivacy('cookies');
       } else if (hash === '#terms') {
         handleOpenPrivacy('terms');
+      } else if (hash.startsWith('#piece/') || hash.startsWith('#ring/')) {
+        const pieceId = hash.replace(/^#(piece|ring)\//, '');
+        const targetRing = RINGS_DATA.find((r) => r.id === pieceId);
+        if (targetRing) {
+          setSelectedRing(targetRing);
+          setIsModalOpen(true);
+        }
       } else if (hash.startsWith('#gazette/') || hash.startsWith('#article/')) {
         const slug = hash.replace(/^#(gazette|article)\//, '');
         const targetArticle = getArticleBySlug(slug);
@@ -117,6 +138,7 @@ export default function App() {
   const handleSelectRing = (ring: Ring) => {
     setSelectedRing(ring);
     setIsModalOpen(true);
+    window.location.hash = `piece/${ring.id}`;
   };
 
   const handleSelectArticle = (article: GazetteArticle) => {
@@ -232,7 +254,13 @@ export default function App() {
       {/* Interactive Private Brief Modal */}
       <ConsultationModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedRing(null);
+          if (window.location.hash.startsWith('#piece/') || window.location.hash.startsWith('#ring/')) {
+            window.location.hash = '';
+          }
+        }}
         selectedRing={selectedRing}
         selectedPost={null}
         onOpenPrivacy={() => handleOpenPrivacy('privacy')}

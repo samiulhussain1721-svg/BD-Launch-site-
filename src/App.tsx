@@ -56,7 +56,7 @@ export default function App() {
     const loadedArticles = getGazetteArticles();
     setArticles(loadedArticles);
 
-    // Initialise Collection Catalog Schema & baseline OpenGraph
+    // Initialise Collection Catalogue Schema & baseline OpenGraph
     setCollectionSEO(RINGS_DATA);
 
     // Check URL hash / pathname on initial load

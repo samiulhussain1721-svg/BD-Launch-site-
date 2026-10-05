@@ -107,7 +107,7 @@ export const RINGS_DATA: Ring[] = [
     tag: 'Brilliance Multiplier',
     title: 'Oval Halo & Pavé',
     img: '/images/gallery/halo_oval.png',
-    desc: 'Surrounded by a seamless halo of micro-brilliants for maximized surface spread, finished with hand-set micro-pavé along the shoulders.',
+    desc: 'Surrounded by a seamless halo of micro-brilliants for maximised surface spread, finished with hand-set micro-pavé along the shoulders.',
     cta: 'Commission Oval Halo',
   },
   {
@@ -125,7 +125,7 @@ export const RINGS_DATA: Ring[] = [
     tag: 'Canary Yellow Fire',
     title: 'Fancy Yellow Trilogy',
     img: '/images/gallery/fancy_yellow.png',
-    desc: 'Natural fancy yellow centre diamond embraced in 18k yellow gold claws, flanked by colorless radiant diamonds set in pure platinum.',
+    desc: 'Natural fancy yellow centre diamond embraced in 18k yellow gold claws, flanked by colourless radiant diamonds set in pure platinum.',
     cta: 'Commission Canary Trilogy',
   },
   {

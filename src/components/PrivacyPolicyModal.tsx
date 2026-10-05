@@ -198,7 +198,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({
                     4. Data Retention &amp; Security
                   </h3>
                   <p>
-                    Enquiry details and custom CAD briefs are retained only for as long as necessary to fulfill your commission and provide ongoing warranty and valuation services. All client information is stored on encrypted systems and accessed solely by authorised atelier craftsmen.
+                    Enquiry details and custom CAD briefs are retained only for as long as necessary to fulfil your commission and provide ongoing warranty and valuation services. All client information is stored on encrypted systems and accessed solely by authorised atelier craftsmen.
                   </p>
                 </section>
 

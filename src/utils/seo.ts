@@ -189,7 +189,7 @@ export const clearProductSEO = () => {
 };
 
 /**
- * Injects Collection Catalog Schema.org (JSON-LD) for the entire jewellery collection
+ * Injects Collection Catalogue Schema.org (JSON-LD) for the entire jewellery collection
  */
 export const setCollectionSEO = (rings: Ring[]) => {
   const origin = typeof window !== 'undefined' ? window.location.origin : 'https://brindleydiamonds.com';

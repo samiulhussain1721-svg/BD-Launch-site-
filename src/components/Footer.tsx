@@ -1,13 +1,18 @@
 import React from 'react';
 import { Logo } from './Logo';
-import { BookOpen, Lock } from 'lucide-react';
+import { BookOpen, Lock, Shield, Cookie, FileText } from 'lucide-react';
 
 interface FooterProps {
   onNavigateToGazette?: () => void;
   onOpenAdmin?: () => void;
+  onOpenPrivacyModal?: (tab: 'privacy' | 'cookies' | 'terms') => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onNavigateToGazette, onOpenAdmin }) => {
+export const Footer: React.FC<FooterProps> = ({
+  onNavigateToGazette,
+  onOpenAdmin,
+  onOpenPrivacyModal,
+}) => {
   return (
     <footer className="pt-12 pb-24 md:py-12 bg-[#080C0E]/90 backdrop-blur-md border-t border-white/10 text-[#E2E8F0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
@@ -20,8 +25,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToGazette, onOpenAdmin
           </p>
         </div>
 
-        <div className="flex flex-col items-center md:items-end text-[10px] font-mono text-[#E2E8F0]/50 uppercase tracking-widest space-y-2">
-          <div className="flex items-center gap-4 text-[#ECE5DA]/80">
+        <div className="flex flex-col items-center md:items-end text-[10px] font-mono text-[#E2E8F0]/50 uppercase tracking-widest space-y-2.5">
+          <div className="flex flex-wrap items-center justify-center md:justify-end gap-3.5 text-[#ECE5DA]/80">
             <a
               href="#gazette"
               onClick={(e) => {
@@ -37,11 +42,35 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateToGazette, onOpenAdmin
             </a>
             <span>•</span>
             <button
-              onClick={onOpenAdmin}
+              onClick={() => onOpenPrivacyModal?.('privacy')}
               className="hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
             >
+              <Shield className="w-2.5 h-2.5 text-[#ECE5DA]" />
+              <span>UK GDPR &amp; Privacy</span>
+            </button>
+            <span>•</span>
+            <button
+              onClick={() => onOpenPrivacyModal?.('cookies')}
+              className="hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
+            >
+              <Cookie className="w-2.5 h-2.5 text-[#ECE5DA]" />
+              <span>Cookie Controls</span>
+            </button>
+            <span>•</span>
+            <button
+              onClick={() => onOpenPrivacyModal?.('terms')}
+              className="hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
+            >
+              <FileText className="w-2.5 h-2.5 text-[#ECE5DA]" />
+              <span>Atelier Terms</span>
+            </button>
+            <span>•</span>
+            <button
+              onClick={onOpenAdmin}
+              className="hover:text-white transition-colors flex items-center gap-1 cursor-pointer opacity-70 hover:opacity-100"
+            >
               <Lock className="w-2.5 h-2.5 text-[#ECE5DA]" />
-              <span>Publisher CMS</span>
+              <span>CMS</span>
             </button>
           </div>
           <p>&copy; {new Date().getFullYear()} BRINDLEY DIAMONDS LTD. ALL RIGHTS RESERVED.</p>

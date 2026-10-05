@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Sparkles, MessageCircle, Ruler, BookOpen } from 'lucide-react';
+import { Menu, X, Sparkles, MessageCircle, Ruler, BookOpen, Compass } from 'lucide-react';
 import { Logo } from './Logo';
+import { AtelierCompass } from './AtelierCompass';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 
 interface HeaderProps {
@@ -39,6 +40,19 @@ export const Header: React.FC<HeaderProps> = ({
 
   const handleSectionClick = (sectionId: string) => (e: React.MouseEvent) => {
     e.preventDefault();
+    if (onNavigateHome) {
+      onNavigateHome();
+    }
+    window.location.hash = sectionId;
+    setTimeout(() => {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 60);
+  };
+
+  const handleSectionNavigation = (sectionId: string) => {
     if (onNavigateHome) {
       onNavigateHome();
     }
@@ -162,8 +176,13 @@ export const Header: React.FC<HeaderProps> = ({
           </a>
         </nav>
 
-        {/* Right Quick Actions */}
-        <div className="hidden lg:flex items-center shrink-0">
+        {/* Right Quick Actions: Atelier Compass & Consultation */}
+        <div className="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
+          <AtelierCompass
+            onNavigateSection={handleSectionNavigation}
+            variant="full"
+          />
+
           <button
             onClick={onOpenConsultation}
             className="btn-solid btn-glow py-1.5 px-2.5 xl:py-2 xl:px-3.5 text-[8px] xl:text-[9px] font-mono tracking-[0.12em] xl:tracking-[0.16em] uppercase rounded-xs cursor-pointer flex items-center gap-1 xl:gap-1.5 whitespace-nowrap shadow-md shrink-0"
@@ -175,8 +194,13 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
         </div>
 
-        {/* Mobile / Tablet Menu Button */}
+        {/* Mobile / Tablet Menu & Compass */}
         <div className="flex lg:hidden items-center gap-2">
+          <AtelierCompass
+            onNavigateSection={handleSectionNavigation}
+            variant="compact"
+          />
+
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 text-[#E2E8F0] hover:text-[#ECE5DA] focus:outline-hidden cursor-pointer"
@@ -197,6 +221,19 @@ export const Header: React.FC<HeaderProps> = ({
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="lg:hidden bg-[#10191D]/95 backdrop-blur-xl border-b border-white/10 px-6 py-6 space-y-4 font-mono text-xs uppercase tracking-widest overflow-hidden"
           >
+            <a
+              href="#about"
+              onClick={handleMobileSectionClick('about')}
+              className="py-2 text-[#ECE5DA] hover:text-white border-b border-white/10 flex items-center justify-between"
+            >
+              <span className="flex items-center gap-2">
+                <Compass className="w-3.5 h-3.5 text-[#ECE5DA]" />
+                <span>Atelier Journey</span>
+              </span>
+              <span className="text-[9px] px-1.5 py-0.5 rounded-xs bg-[#ECE5DA]/20 text-[#ECE5DA]">
+                6 Phases
+              </span>
+            </a>
             <a
               href="#about"
               onClick={handleMobileSectionClick('about')}

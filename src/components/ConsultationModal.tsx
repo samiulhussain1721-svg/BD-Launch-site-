@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { INSERT_PHONE, ATELIER_INSTAGRAM_DM_WEB, openInstagramDM } from '../config/atelier';
+import { getAssetUrl } from '../utils/assets';
 
 const PIECE_TYPES = [
   { id: 'Engagement Ring', label: 'Engagement Ring', icon: '💍' },
@@ -88,13 +89,15 @@ interface ConsultationModalProps {
   onClose: () => void;
   selectedRing?: Ring | null;
   selectedPost?: VaultPost | null;
+  onOpenPrivacy?: () => void;
 }
 
 export const ConsultationModal: React.FC<ConsultationModalProps> = ({
   isOpen,
   onClose,
   selectedRing,
-  selectedPost
+  selectedPost,
+  onOpenPrivacy
 }) => {
   const shouldReduceMotion = useReducedMotion();
   const [selectedPiece, setSelectedPiece] = useState('Engagement Ring');
@@ -288,7 +291,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                 {selectedRing && !selectedPost && (
                   <div className="bg-[#10191D] border border-white/10 rounded-xs p-3 flex gap-3 mb-6">
                     <img
-                      src={selectedRing.img}
+                      src={getAssetUrl(selectedRing.img)}
                       alt={selectedRing.title}
                       className="w-16 h-16 object-cover rounded-xs border border-white/10"
                     />
@@ -578,7 +581,20 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                       {isSubmittingBrief ? 'Preparing Dossier...' : 'Submit Private Brief'}
                     </button>
 
-                    <div className="flex items-center justify-center gap-2 text-[10px] font-mono text-[#E2E8F0]/50 uppercase tracking-wider text-center">
+                    <p className="text-[10px] text-[#E2E8F0]/50 font-light leading-relaxed text-center px-2">
+                      Protected under UK GDPR. Your enquiry and custom brief details are kept strictly confidential by our atelier and used solely to prepare your bespoke quote. We never sell or share client data.{' '}
+                      {onOpenPrivacy && (
+                        <button
+                          type="button"
+                          onClick={onOpenPrivacy}
+                          className="text-[#ECE5DA] underline hover:text-white transition-colors cursor-pointer inline"
+                        >
+                          View Privacy Notice
+                        </button>
+                      )}
+                    </p>
+
+                    <div className="flex items-center justify-center gap-2 text-[10px] font-mono text-[#E2E8F0]/50 uppercase tracking-wider text-center pt-1">
                       <Lock className="w-3.5 h-3.5 text-[#ECE5DA]" />
                       <span>100% Confidential • Handcrafted in Birmingham</span>
                     </div>

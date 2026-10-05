@@ -87,9 +87,13 @@ const generateBriefFormattedMessage = (brief: EnquiryBrief) => {
 
 interface ConsultationSectionProps {
   onOpenConsultation?: () => void;
+  onOpenPrivacy?: () => void;
 }
 
-export const ConsultationSection: React.FC<ConsultationSectionProps> = ({ onOpenConsultation }) => {
+export const ConsultationSection: React.FC<ConsultationSectionProps> = ({
+  onOpenConsultation,
+  onOpenPrivacy,
+}) => {
   const shouldReduceMotion = useReducedMotion();
 
   // Piece Type state
@@ -730,6 +734,19 @@ export const ConsultationSection: React.FC<ConsultationSectionProps> = ({ onOpen
                   <Send className="w-4 h-4" />
                   {isSubmittingBrief ? 'Preparing Dossier...' : 'Submit Private Brief'}
                 </button>
+
+                <p className="text-[10.5px] text-[#E2E8F0]/50 font-light leading-relaxed text-center px-4 pt-1">
+                  Protected under UK GDPR. Your enquiry details are held in strict confidence by our atelier and used exclusively to formulate your bespoke quote.{' '}
+                  {onOpenPrivacy && (
+                    <button
+                      type="button"
+                      onClick={onOpenPrivacy}
+                      className="text-[#ECE5DA] underline hover:text-white transition-colors cursor-pointer inline"
+                    >
+                      Privacy Notice
+                    </button>
+                  )}
+                </p>
 
                 <div className="flex items-center justify-center gap-2 text-[10px] font-mono text-[#E2E8F0]/50 uppercase tracking-wider pt-2">
                   <Lock className="w-3.5 h-3.5 text-[#ECE5DA]" />

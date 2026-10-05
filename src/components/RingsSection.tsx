@@ -4,6 +4,7 @@ import { Sparkles, ArrowRight, MessageCircle, Play } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Logo } from './Logo';
 import { getProductWhatsAppUrl, INSERT_PHONE } from '../config/atelier';
+import { getAssetUrl } from '../utils/assets';
 
 interface RingsSectionProps {
   rings: Ring[];
@@ -25,15 +26,37 @@ interface DiamondCutInfo {
 
 const CORE_DIAMOND_CUTS: DiamondCutInfo[] = [
   {
+    id: 'round',
+    name: 'Round Brilliant',
+    subtitle: '57-Facet Optical Fire',
+    ratio: '1.00 : 1.00 Symmetry',
+    fireRating: 'Maximum Optical Dispersion',
+    image: getAssetUrl('images/gallery/solitaire_round_classic.png'),
+    description: 'The mathematical peak of light refraction. Cut with exacting angles to return 100% of entering light back to the eye in vivid spectral flashes.',
+    bestFor: 'Six-prong cathedral mounts & timeless minimalist bands',
+    recommendedCarats: '1.00ct – 2.50ct',
+  },
+  {
     id: 'oval',
     name: 'Oval Cut',
     subtitle: 'Elongated Brilliance',
     ratio: '1.35 – 1.45 Ratio',
     fireRating: 'Exceptional Scintillation',
-    image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=800&q=85',
+    image: getAssetUrl('images/gallery/solitaire_oval.png'),
     description: 'An elegant cut offering a flattering, lengthening effect on the finger with surface spread that optimises carat presentation.',
     bestFor: 'Modern solitaires & pavé shoulders',
     recommendedCarats: '1.50ct – 3.00ct',
+  },
+  {
+    id: 'emerald',
+    name: 'Emerald Cut',
+    subtitle: 'Hall of Mirrors',
+    ratio: '1.30 – 1.50 Ratio',
+    fireRating: 'Dramatic Step-Cut Flashes',
+    image: getAssetUrl('images/gallery/solitaire_emerald.png'),
+    description: 'Distinctive rectangular step-cuts with beveled corners and open tables that highlight crystalline clarity and vintage architectural grandeur.',
+    bestFor: 'Art Deco settings, trapezoid trilogies & sleek platinum bezels',
+    recommendedCarats: '1.50ct – 4.00ct',
   },
   {
     id: 'cushion',
@@ -41,21 +64,21 @@ const CORE_DIAMOND_CUTS: DiamondCutInfo[] = [
     subtitle: 'Pillow Contour',
     ratio: '1.00 – 1.15 Ratio',
     fireRating: 'Deep Antique Sparkle',
-    image: 'https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&w=800&q=85',
+    image: getAssetUrl('images/gallery/solitaire_cushion.png'),
     description: 'Softened rounded corners reminiscent of vintage heirloom stones, combining rich historical charm with precision facet performance.',
     bestFor: 'Vintage halos, three-stone trilogies & platinum settings',
     recommendedCarats: '1.75ct – 3.50ct',
   },
   {
-    id: 'round',
-    name: 'Round Brilliant',
-    subtitle: '57-Facet Optical Fire',
-    ratio: '1.00 : 1.00 Symmetry',
-    fireRating: 'Maximum Optical Dispersion',
-    image: 'https://images.unsplash.com/photo-1543294001-f7cbfe92237e?auto=format&fit=crop&w=800&q=85',
-    description: 'The mathematical peak of light refraction. Cut with exacting angles to return 100% of entering light back to the eye in vivid spectral flashes.',
-    bestFor: 'Six-prong cathedral mounts & timeless minimalist bands',
-    recommendedCarats: '1.00ct – 2.50ct',
+    id: 'radiant',
+    name: 'Radiant Cut',
+    subtitle: '70-Facet Hybrid Radiance',
+    ratio: '1.15 – 1.35 Ratio',
+    fireRating: 'Electrifying Crushed Ice Fire',
+    image: getAssetUrl('images/gallery/solitaire_radiant.png'),
+    description: 'Combines the emerald silhouette with brilliant-cut faceting, yielding intense multidirectional sparkle and disguised natural inclusions.',
+    bestFor: 'Triple-row micro-pavé bands & hidden halo mounts',
+    recommendedCarats: '2.00ct – 3.50ct',
   },
   {
     id: 'fancy-yellow',
@@ -63,7 +86,7 @@ const CORE_DIAMOND_CUTS: DiamondCutInfo[] = [
     subtitle: 'Canary Radiance',
     ratio: 'Radiant / Cushion Cut',
     fireRating: 'Intense Warm Fire',
-    image: 'https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=800&q=85',
+    image: getAssetUrl('images/gallery/fancy_yellow.png'),
     description: 'Distinctive fancy coloured diamonds with natural golden sunshine warmth, paired masterfully with 18k yellow gold prongs.',
     bestFor: 'Bespoke two-tone yellow gold & platinum commissions',
     recommendedCarats: '2.00ct – 4.00ct',
@@ -199,10 +222,10 @@ export const RingsSection: React.FC<RingsSectionProps> = ({
                 <div>
                   <div className="relative h-64 overflow-hidden bg-[#10191D]">
                     <img
-                      src={piece.img}
+                      src={getAssetUrl(piece.img)}
                       alt={piece.title}
                       className="w-full h-full object-cover img-luxury-zoom filter contrast-105 group-hover:scale-108 transition-transform duration-700 ease-out"
-                      referrerPolicy="no-referrer"
+                      loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#10191D] via-transparent to-transparent pointer-events-none" />
 
@@ -288,10 +311,10 @@ export const RingsSection: React.FC<RingsSectionProps> = ({
                 <div>
                   <div className="relative h-64 overflow-hidden bg-[#10191D]">
                     <img
-                      src={cut.image}
+                      src={getAssetUrl(cut.image)}
                       alt={cut.name}
                       className="w-full h-full object-cover img-luxury-zoom filter contrast-105 brightness-95 group-hover:scale-108 transition-transform duration-700 ease-out"
-                      referrerPolicy="no-referrer"
+                      loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#10191D] via-transparent to-black/20 pointer-events-none" />
 

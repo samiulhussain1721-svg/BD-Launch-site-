@@ -13,6 +13,8 @@ import { InstagramDMBanner } from './components/InstagramDMBanner';
 import { FAQSection } from './components/FAQSection';
 import { Footer } from './components/Footer';
 import { ConsultationModal } from './components/ConsultationModal';
+import { PrivacyPolicyModal } from './components/PrivacyPolicyModal';
+import { CookieBanner } from './components/CookieBanner';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { MobileStickyActionDock } from './components/MobileStickyActionDock';
 import { ScrollDiamondBracelet } from './components/ScrollDiamondBracelet';
@@ -24,10 +26,19 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRing, setSelectedRing] = useState<Ring | null>(null);
 
+  // Privacy & Compliance Modal state
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+  const [privacyModalTab, setPrivacyModalTab] = useState<'privacy' | 'cookies' | 'terms'>('privacy');
+
   // The Vault Gazette state
   const [articles, setArticles] = useState<GazetteArticle[]>([]);
   const [selectedArticle, setSelectedArticle] = useState<GazetteArticle | null>(null);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+
+  const handleOpenPrivacy = (tab: 'privacy' | 'cookies' | 'terms' = 'privacy') => {
+    setPrivacyModalTab(tab);
+    setIsPrivacyOpen(true);
+  };
 
   // Load articles & handle routing
   useEffect(() => {
@@ -41,6 +52,12 @@ export default function App() {
 
       if (path.endsWith('/vault-admin') || path.endsWith('/vault-admin/') || hash === '#vault-admin' || hash === '#gazette-admin') {
         setIsAdminOpen(true);
+      } else if (hash === '#privacy' || hash === '#gdpr') {
+        handleOpenPrivacy('privacy');
+      } else if (hash === '#cookies') {
+        handleOpenPrivacy('cookies');
+      } else if (hash === '#terms') {
+        handleOpenPrivacy('terms');
       } else if (hash.startsWith('#gazette/') || hash.startsWith('#article/')) {
         const slug = hash.replace(/^#(gazette|article)\//, '');
         const targetArticle = getArticleBySlug(slug);
@@ -184,7 +201,10 @@ export default function App() {
               />
 
               {/* Consultation & Bespoke Enquiry Form */}
-              <ConsultationSection onOpenConsultation={handleOpenConsultation} />
+              <ConsultationSection
+                onOpenConsultation={handleOpenConsultation}
+                onOpenPrivacy={() => handleOpenPrivacy('privacy')}
+              />
 
               {/* Instagram DM Editorial Banner */}
               <InstagramDMBanner />
@@ -199,6 +219,7 @@ export default function App() {
         <Footer
           onNavigateToGazette={handleNavigateToGazette}
           onOpenAdmin={() => setIsAdminOpen(true)}
+          onOpenPrivacyModal={handleOpenPrivacy}
         />
       </div>
 
@@ -214,7 +235,23 @@ export default function App() {
         onClose={() => setIsModalOpen(false)}
         selectedRing={selectedRing}
         selectedPost={null}
+        onOpenPrivacy={() => handleOpenPrivacy('privacy')}
       />
+
+      {/* UK GDPR & Privacy Policy Modal */}
+      <PrivacyPolicyModal
+        isOpen={isPrivacyOpen}
+        onClose={() => {
+          setIsPrivacyOpen(false);
+          if (['#privacy', '#gdpr', '#cookies', '#terms'].includes(window.location.hash)) {
+            window.location.hash = '';
+          }
+        }}
+        defaultTab={privacyModalTab}
+      />
+
+      {/* PECR / GDPR Cookie Consent Banner */}
+      <CookieBanner onOpenPrivacyModal={handleOpenPrivacy} />
 
       {/* The Vault Gazette CMS Admin Modal */}
       <VaultAdminModal

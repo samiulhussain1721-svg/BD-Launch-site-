@@ -69,3 +69,11 @@ export interface EnquiryBrief {
   createdAt: string;
 }
 
+export interface GazetteSubscriber {
+  id: string;
+  email: string;
+  subscribedAt: string;
+  source: string;
+  status: 'active' | 'unsubscribed';
+}
+

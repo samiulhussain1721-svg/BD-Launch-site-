@@ -1,5 +1,6 @@
 import React from 'react';
 import { Logo } from './Logo';
+import { FooterNewsletter } from './FooterNewsletter';
 import { BookOpen, Lock, Shield, Cookie, FileText } from 'lucide-react';
 
 interface FooterProps {
@@ -14,71 +15,78 @@ export const Footer: React.FC<FooterProps> = ({
   onOpenPrivacyModal,
 }) => {
   return (
-    <footer className="pt-12 pb-24 md:py-12 bg-[#080C0E]/90 backdrop-blur-md border-t border-white/10 text-[#E2E8F0]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
-        <div>
-          <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
-            <Logo size="sm" showText={true} variant="gold" />
-          </div>
-          <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-[#E2E8F0]/60 mt-2">
-            Birmingham Jewellery Quarter, United Kingdom • Sourced Directly • Bespoke Fine Jewellery
-          </p>
-        </div>
+    <footer className="pt-12 pb-24 md:py-16 bg-[#080C0E]/95 backdrop-blur-md border-t border-white/10 text-[#E2E8F0]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Discreet Newsletter Signup Section for The Vault Gazette */}
+        <FooterNewsletter onOpenPrivacyModal={onOpenPrivacyModal} />
 
-        <div className="flex flex-col items-center md:items-end text-[10px] font-mono text-[#E2E8F0]/50 uppercase tracking-widest space-y-2.5">
-          <div className="flex flex-wrap items-center justify-center md:justify-end gap-3.5 text-[#ECE5DA]/80">
-            <a
-              href="#gazette"
-              onClick={(e) => {
-                if (onNavigateToGazette) {
-                  e.preventDefault();
-                  onNavigateToGazette();
-                }
-              }}
-              className="hover:text-white transition-colors flex items-center gap-1"
-            >
-              <BookOpen className="w-3 h-3 text-[#ECE5DA]" />
-              <span>The Vault Gazette</span>
-            </a>
-            <span>•</span>
-            <button
-              onClick={() => onOpenPrivacyModal?.('privacy')}
-              className="hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
-            >
-              <Shield className="w-2.5 h-2.5 text-[#ECE5DA]" />
-              <span>UK GDPR &amp; Privacy</span>
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => onOpenPrivacyModal?.('cookies')}
-              className="hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
-            >
-              <Cookie className="w-2.5 h-2.5 text-[#ECE5DA]" />
-              <span>Cookie Controls</span>
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => onOpenPrivacyModal?.('terms')}
-              className="hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
-            >
-              <FileText className="w-2.5 h-2.5 text-[#ECE5DA]" />
-              <span>Atelier Terms</span>
-            </button>
-            <span>•</span>
-            <button
-              onClick={onOpenAdmin}
-              className="hover:text-white transition-colors flex items-center gap-1 cursor-pointer opacity-70 hover:opacity-100"
-            >
-              <Lock className="w-2.5 h-2.5 text-[#ECE5DA]" />
-              <span>CMS</span>
-            </button>
+        {/* Main Footer Links & Atelier Identity */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+          <div>
+            <div className="flex items-center justify-center md:justify-start gap-3 mb-2">
+              <Logo size="sm" showText={true} variant="gold" />
+            </div>
+            <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-[#E2E8F0]/60 mt-2">
+              Birmingham Jewellery Quarter, United Kingdom • Sourced Directly • Bespoke Fine Jewellery
+            </p>
           </div>
-          <p>&copy; {new Date().getFullYear()} BRINDLEY DIAMONDS LTD. ALL RIGHTS RESERVED.</p>
-          <p className="text-[#ECE5DA]/70">DESIGNED &amp; CRAFTED EXCLUSIVELY IN BIRMINGHAM ATELIER.</p>
+
+          <div className="flex flex-col items-center md:items-end text-[10px] font-mono text-[#E2E8F0]/50 uppercase tracking-widest space-y-2.5">
+            <div className="flex flex-wrap items-center justify-center md:justify-end gap-3.5 text-[#ECE5DA]/80">
+              <a
+                href="#gazette"
+                onClick={(e) => {
+                  if (onNavigateToGazette) {
+                    e.preventDefault();
+                    onNavigateToGazette();
+                  }
+                }}
+                className="hover:text-white transition-colors flex items-center gap-1"
+              >
+                <BookOpen className="w-3 h-3 text-[#ECE5DA]" />
+                <span>The Vault Gazette</span>
+              </a>
+              <span>•</span>
+              <button
+                onClick={() => onOpenPrivacyModal?.('privacy')}
+                className="hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
+              >
+                <Shield className="w-2.5 h-2.5 text-[#ECE5DA]" />
+                <span>UK GDPR &amp; Privacy</span>
+              </button>
+              <span>•</span>
+              <button
+                onClick={() => onOpenPrivacyModal?.('cookies')}
+                className="hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
+              >
+                <Cookie className="w-2.5 h-2.5 text-[#ECE5DA]" />
+                <span>Cookie Controls</span>
+              </button>
+              <span>•</span>
+              <button
+                onClick={() => onOpenPrivacyModal?.('terms')}
+                className="hover:text-white transition-colors flex items-center gap-1 cursor-pointer"
+              >
+                <FileText className="w-2.5 h-2.5 text-[#ECE5DA]" />
+                <span>Atelier Terms</span>
+              </button>
+              <span>•</span>
+              <button
+                onClick={onOpenAdmin}
+                className="hover:text-white transition-colors flex items-center gap-1 cursor-pointer opacity-70 hover:opacity-100"
+              >
+                <Lock className="w-2.5 h-2.5 text-[#ECE5DA]" />
+                <span>CMS</span>
+              </button>
+            </div>
+            <p>&copy; {new Date().getFullYear()} BRINDLEY DIAMONDS LTD. ALL RIGHTS RESERVED.</p>
+            <p className="text-[#ECE5DA]/70">DESIGNED &amp; CRAFTED EXCLUSIVELY IN BIRMINGHAM ATELIER.</p>
+          </div>
         </div>
       </div>
     </footer>
   );
 };
+
 
 

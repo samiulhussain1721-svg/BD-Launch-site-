@@ -15,34 +15,10 @@ export default defineConfig(({ command }) => {
         configureServer(server) {
           server.middlewares.use((req, res, next) => {
             if (req.url) {
-              // Strip any single or repeated /BD-Launch-site- prefix
-              let cleanUrl = req.url.split('?')[0];
-              while (cleanUrl.startsWith('/BD-Launch-site-')) {
-                cleanUrl = cleanUrl.slice('/BD-Launch-site-'.length);
-                if (!cleanUrl.startsWith('/')) cleanUrl = '/' + cleanUrl;
-              }
-
-              if (
-                cleanUrl.startsWith('/images/') ||
-                cleanUrl.startsWith('/videos/') ||
-                cleanUrl.startsWith('/firefly.png') ||
-                cleanUrl.startsWith('/logo.png')
-              ) {
-                const filePath = path.join(__dirname, 'public', cleanUrl);
-                if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
-                  const ext = path.extname(filePath).toLowerCase();
-                  const mimeTypes: Record<string, string> = {
-                    '.png': 'image/png',
-                    '.jpg': 'image/jpeg',
-                    '.jpeg': 'image/jpeg',
-                    '.webp': 'image/webp',
-                    '.svg': 'image/svg+xml',
-                    '.mp4': 'video/mp4',
-                  };
-                  res.setHeader('Content-Type', mimeTypes[ext] || 'application/octet-stream');
-                  fs.createReadStream(filePath).pipe(res);
-                  return;
-                }
+              // Strip any single or repeated /BD-Launch-site- prefix and let Vite handle static serving with Content-Length & caching
+              while (req.url.startsWith('/BD-Launch-site-')) {
+                req.url = req.url.slice('/BD-Launch-site-'.length);
+                if (!req.url.startsWith('/')) req.url = '/' + req.url;
               }
             }
             next();

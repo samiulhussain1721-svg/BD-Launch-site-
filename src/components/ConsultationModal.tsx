@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { INSERT_PHONE, ATELIER_INSTAGRAM_DM_WEB, openInstagramDM } from '../config/atelier';
-import { getAssetUrl } from '../utils/assets';
+import { getAssetUrl, getPieceFallbackUrl } from '../utils/assets';
 
 const PIECE_TYPES = [
   { id: 'Engagement Ring', label: 'Engagement Ring', icon: '💍' },
@@ -293,6 +293,13 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                     <img
                       src={getAssetUrl(selectedRing.img)}
                       alt={selectedRing.title}
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        const fallback = getPieceFallbackUrl(selectedRing.id, selectedRing.category);
+                        if (target.src !== fallback) {
+                          target.src = fallback;
+                        }
+                      }}
                       className="w-16 h-16 object-cover rounded-xs border border-white/10"
                     />
                     <div className="flex-1 text-xs">

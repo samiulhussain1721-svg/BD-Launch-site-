@@ -4,7 +4,7 @@ import { Sparkles, ArrowRight, MessageCircle, Play } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import { Logo } from './Logo';
 import { getProductWhatsAppUrl, INSERT_PHONE } from '../config/atelier';
-import { getAssetUrl } from '../utils/assets';
+import { getAssetUrl, getPieceFallbackUrl } from '../utils/assets';
 
 interface RingsSectionProps {
   rings: Ring[];
@@ -224,6 +224,13 @@ export const RingsSection: React.FC<RingsSectionProps> = ({
                     <img
                       src={getAssetUrl(piece.img)}
                       alt={piece.title}
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        const fallback = getPieceFallbackUrl(piece.id, piece.category);
+                        if (target.src !== fallback) {
+                          target.src = fallback;
+                        }
+                      }}
                       className="w-full h-full object-cover img-luxury-zoom filter contrast-105 group-hover:scale-108 transition-transform duration-700 ease-out"
                       loading="lazy"
                     />
@@ -302,6 +309,13 @@ export const RingsSection: React.FC<RingsSectionProps> = ({
                     <img
                       src={getAssetUrl(cut.image)}
                       alt={cut.name}
+                      onError={(e) => {
+                        const target = e.currentTarget;
+                        const fallback = getPieceFallbackUrl(cut.id, 'Engagement Rings');
+                        if (target.src !== fallback) {
+                          target.src = fallback;
+                        }
+                      }}
                       className="w-full h-full object-cover img-luxury-zoom filter contrast-105 brightness-95 group-hover:scale-108 transition-transform duration-700 ease-out"
                       loading="lazy"
                     />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GazetteArticle, GazetteCategory } from '../types';
+import { GazetteArticle, GazetteCategory, GazetteSubscriber } from '../types';
 import {
   saveGazetteArticle,
   deleteGazetteArticle,
@@ -8,7 +8,10 @@ import {
   calculateReadTime,
   verifyAdminPasscode,
   checkAdminAuth,
-  setAdminAuth
+  setAdminAuth,
+  getGazetteSubscribers,
+  removeGazetteSubscriber,
+  exportSubscribersToCSV
 } from '../utils/gazetteStorage';
 import { GazetteMarkdownRenderer } from './GazetteMarkdownRenderer';
 import {
@@ -37,7 +40,10 @@ import {
   Heading3,
   Quote,
   List,
-  Sparkles
+  Sparkles,
+  Users,
+  Download,
+  Mail
 } from 'lucide-react';
 
 interface VaultAdminModalProps {
@@ -65,9 +71,13 @@ export const VaultAdminModal: React.FC<VaultAdminModalProps> = ({
   const [authError, setAuthError] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
 
-  // Active view in Admin: 'list' | 'editor'
-  const [currentView, setCurrentView] = useState<'list' | 'editor'>('list');
+  // Active view in Admin: 'list' | 'editor' | 'subscribers'
+  const [currentView, setCurrentView] = useState<'list' | 'editor' | 'subscribers'>('list');
   const [editorMode, setEditorMode] = useState<'write' | 'preview'>('write');
+
+  // Subscribers state
+  const [subscribers, setSubscribers] = useState<GazetteSubscriber[]>([]);
+  const [subscriberSearch, setSubscriberSearch] = useState('');
 
   // Form Fields
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -91,8 +101,44 @@ export const VaultAdminModal: React.FC<VaultAdminModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       setIsAuthenticated(checkAdminAuth());
+      setSubscribers(getGazetteSubscribers());
     }
   }, [isOpen]);
+
+  // Listen for subscriber additions/deletions in real-time
+  useEffect(() => {
+    const handleSubUpdate = () => {
+      setSubscribers(getGazetteSubscribers());
+    };
+    window.addEventListener('gazette_subscriber_added', handleSubUpdate);
+    window.addEventListener('gazette_subscribers_updated', handleSubUpdate);
+    return () => {
+      window.removeEventListener('gazette_subscriber_added', handleSubUpdate);
+      window.removeEventListener('gazette_subscribers_updated', handleSubUpdate);
+    };
+  }, []);
+
+  const handleExportCSV = () => {
+    const csv = exportSubscribersToCSV();
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const dateStr = new Date().toISOString().split('T')[0];
+    link.setAttribute('href', url);
+    link.setAttribute('download', `brindley_gazette_subscribers_${dateStr}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showNotification('Subscriber list exported as CSV successfully.');
+  };
+
+  const handleRemoveSubscriber = (id: string, email: string) => {
+    if (window.confirm(`Remove ${email} from The Vault Gazette subscriber list?`)) {
+      removeGazetteSubscriber(id);
+      setSubscribers(getGazetteSubscribers());
+      showNotification(`Subscriber ${email} removed.`);
+    }
+  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -334,7 +380,7 @@ Begin your bespoke article here. Discuss diamond quality, craftsmanship, or sizi
                   <input
                     type="password"
                     autoFocus
-                    placeholder="Enter PIN (e.g. 1721) or Password"
+                    placeholder="Enter Master Passcode"
                     value={passcode}
                     onChange={(e) => {
                       setPasscode(e.target.value);
@@ -351,7 +397,7 @@ Begin your bespoke article here. Discuss diamond quality, craftsmanship, or sizi
                 {authError && (
                   <p className="text-xs font-mono text-rose-400 flex items-center justify-center gap-1.5">
                     <AlertCircle className="w-3.5 h-3.5" />
-                    <span>Incorrect passcode. Default PIN: 1721</span>
+                    <span>Incorrect passcode. Access denied.</span>
                   </p>
                 )}
 
@@ -376,13 +422,181 @@ Begin your bespoke article here. Discuss diamond quality, craftsmanship, or sizi
                   <span>Access CMS Workspace</span>
                 </button>
               </form>
-
-              <div className="mt-8 p-3 rounded-xs bg-white/5 border border-white/10 text-[10px] font-mono text-[#E2E8F0]/50 text-left">
-                <p className="font-semibold text-[#ECE5DA] mb-1">🔐 Quick Access Credentials:</p>
-                <p>PIN: <code className="text-white bg-black/40 px-1 py-0.5 rounded">1721</code> or Password: <code className="text-white bg-black/40 px-1 py-0.5 rounded">brindley2026</code></p>
-              </div>
             </div>
-          ) : currentView === 'list' ? (
+          ) : (
+            <div className="space-y-6">
+              {/* Primary CMS Navigation: Articles vs Subscribers */}
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setCurrentView('list')}
+                    className={`px-3 py-1.5 rounded-xs text-xs font-mono uppercase tracking-wider transition-colors flex items-center gap-2 cursor-pointer ${
+                      currentView === 'list' || currentView === 'editor'
+                        ? 'bg-[#ECE5DA] text-[#080C0E] font-semibold'
+                        : 'text-white/60 hover:text-white hover:bg-white/5 border border-white/10'
+                    }`}
+                  >
+                    <FileText className="w-3.5 h-3.5" />
+                    <span>Articles ({articles.length})</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setCurrentView('subscribers')}
+                    className={`px-3 py-1.5 rounded-xs text-xs font-mono uppercase tracking-wider transition-colors flex items-center gap-2 cursor-pointer ${
+                      currentView === 'subscribers'
+                        ? 'bg-[#ECE5DA] text-[#080C0E] font-semibold'
+                        : 'text-white/60 hover:text-white hover:bg-white/5 border border-white/10'
+                    }`}
+                  >
+                    <Users className="w-3.5 h-3.5" />
+                    <span>Subscribers ({subscribers.length})</span>
+                  </button>
+                </div>
+
+                {currentView === 'subscribers' && subscribers.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleExportCSV}
+                    className="px-3 py-1.5 rounded-xs bg-[#ECE5DA] hover:bg-white text-[#080C0E] text-xs font-mono uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-sm cursor-pointer font-semibold"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Export CSV</span>
+                  </button>
+                )}
+              </div>
+
+              {currentView === 'subscribers' ? (
+                /* SUBSCRIBERS VIEW */
+                <div className="space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
+                    <div>
+                      <h4 className="text-lg font-display text-white uppercase tracking-wider">
+                        The Vault Gazette — Private Subscribers
+                      </h4>
+                      <p className="text-xs font-mono text-[#E2E8F0]/60">
+                        Client email subscriptions received from the footer newsletter and editorial dispatches.
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <div className="relative w-full sm:w-64">
+                        <Search className="w-3.5 h-3.5 text-white/40 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <input
+                          type="text"
+                          value={subscriberSearch}
+                          onChange={(e) => setSubscriberSearch(e.target.value)}
+                          placeholder="Search email..."
+                          className="w-full pl-9 pr-3 py-1.5 bg-[#172227] border border-white/15 focus:border-[#ECE5DA] rounded-xs text-xs font-mono text-white placeholder:text-white/30 outline-none"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Summary Metric Cards */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="p-4 rounded-xs bg-[#172227]/70 border border-white/10">
+                      <div className="text-[10px] font-mono uppercase tracking-wider text-[#ECE5DA]/70 mb-1">
+                        Active Subscriptions
+                      </div>
+                      <div className="text-2xl font-display text-white">
+                        {subscribers.filter((s) => s.status === 'active').length}
+                      </div>
+                    </div>
+                    <div className="p-4 rounded-xs bg-[#172227]/70 border border-white/10">
+                      <div className="text-[10px] font-mono uppercase tracking-wider text-[#ECE5DA]/70 mb-1">
+                        Primary Source Channel
+                      </div>
+                      <div className="text-sm font-mono text-white/90">
+                        Footer Dispatch Form
+                      </div>
+                    </div>
+                    <div className="p-4 rounded-xs bg-[#172227]/70 border border-white/10">
+                      <div className="text-[10px] font-mono uppercase tracking-wider text-[#ECE5DA]/70 mb-1">
+                        Compliance Protocol
+                      </div>
+                      <div className="text-sm font-mono text-emerald-400">
+                        UK GDPR Consent Logged
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Subscribers Table */}
+                  <div className="border border-white/10 rounded-xs overflow-hidden bg-[#172227]/70">
+                    {subscribers.length === 0 ? (
+                      <div className="py-16 px-4 text-center space-y-3">
+                        <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mx-auto text-[#ECE5DA]">
+                          <Mail className="w-5 h-5" />
+                        </div>
+                        <h5 className="text-base font-display text-white">No Registered Subscribers Yet</h5>
+                        <p className="text-xs font-mono text-[#E2E8F0]/60 max-w-md mx-auto leading-relaxed">
+                          When visitors enter their email address into the footer newsletter form, their details are immediately captured, timestamped, and stored here.
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="divide-y divide-white/10">
+                        <div className="hidden sm:grid sm:grid-cols-12 px-5 py-3 text-[10px] font-mono uppercase tracking-wider text-[#ECE5DA]/70 bg-white/[0.02]">
+                          <div className="col-span-5">Subscriber Email</div>
+                          <div className="col-span-3">Registered At</div>
+                          <div className="col-span-2">Source</div>
+                          <div className="col-span-1">Status</div>
+                          <div className="col-span-1 text-right">Action</div>
+                        </div>
+
+                        {subscribers
+                          .filter((s) => s.email.toLowerCase().includes(subscriberSearch.toLowerCase()))
+                          .map((sub) => (
+                            <div
+                              key={sub.id}
+                              className="p-4 sm:px-5 sm:py-3.5 flex flex-col sm:grid sm:grid-cols-12 items-start sm:items-center gap-2 sm:gap-4 hover:bg-white/5 transition-colors"
+                            >
+                              <div className="sm:col-span-5 flex items-center gap-2">
+                                <Mail className="w-3.5 h-3.5 text-[#ECE5DA]/70 shrink-0" />
+                                <span className="text-xs font-mono text-white font-medium break-all">
+                                  {sub.email}
+                                </span>
+                              </div>
+
+                              <div className="sm:col-span-3 text-[11px] font-mono text-[#E2E8F0]/60">
+                                {new Date(sub.subscribedAt).toLocaleString('en-GB', {
+                                  day: 'numeric',
+                                  month: 'short',
+                                  year: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })}
+                              </div>
+
+                              <div className="sm:col-span-2">
+                                <span className="px-2 py-0.5 text-[9px] font-mono uppercase tracking-wider bg-white/5 border border-white/10 rounded-xs text-[#E2E8F0]/80">
+                                  {sub.source.replace('_', ' ')}
+                                </span>
+                              </div>
+
+                              <div className="sm:col-span-1">
+                                <span className="px-2 py-0.5 text-[9px] font-mono uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xs">
+                                  {sub.status}
+                                </span>
+                              </div>
+
+                              <div className="sm:col-span-1 flex items-center justify-end w-full sm:w-auto">
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemoveSubscriber(sub.id, sub.email)}
+                                  className="p-1.5 text-white/40 hover:text-rose-400 transition-colors cursor-pointer"
+                                  title="Remove subscriber"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : currentView === 'list' ? (
             /* ARTICLES LIST VIEW */
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
@@ -862,6 +1076,8 @@ Begin your bespoke article here. Discuss diamond quality, craftsmanship, or sizi
                 </div>
               )}
             </div>
+            )}
+          </div>
           )}
         </div>
       </div>
